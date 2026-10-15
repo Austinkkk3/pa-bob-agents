@@ -101,7 +101,7 @@ I have CSV files in the lab-01-bob-planning-analytics-mcp/assets/ folder for an 
 Read the dimension files (dim_account.csv, dim_department.csv, dim_scenario.csv,
 dim_time.csv, dim_version.csv) and the fact file (fact_financial_data.csv).
 
-Create a complete TM1 model on the DemoGuide server:
+Create a complete TM1 model on the smartco server:
 - Create all required dimensions with their elements and attributes
 - Create a cube called FPA_Variance with those dimensions
 - Write a TurboIntegrator process to load the fact data
