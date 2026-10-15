@@ -1,147 +1,61 @@
-# Planning Analytics, Bob & watsonx Orchestrate Workshop
+# Planning Analytics × Bob × watsonx Orchestrate Workshop
 
-## AI-Powered Planning Experiences for FP&A Teams
-
----
-
-This hands-on workshop demonstrates how **IBM Bob**, **IBM Planning Analytics (TM1)**, and **IBM watsonx Orchestrate** work together to build intelligent, AI-powered planning experiences. Participants will move from foundational concepts to working labs — finishing the day with practical skills they can apply to their own Finance & Planning use cases.
-
-**Duration:** 6 hours (full day)
-**Format:** Instructor-led with hands-on lab exercises
-**Level:** Intermediate
+**Duration:** 6 hours · Intermediate · Instructor-led
 
 ---
 
-## Workshop Overview
+## What You'll Build
 
-| # | Session | Duration | Speaker |
-|---|---------|----------|---------|
-| — | Welcome, introductions, and objectives | 10 min | Charu, Mario |
-| [Deck](https://ibm.box.com/s/ddqqf63j6m37styuic7z08q7pfrz3e9z) | watsonx Orchestrate overview | 30 min | Lorenzo |
-| [Deck](https://ibm.box.com/s/76jc2g01sacgk4acqolvop926olv2o7m) | Bob overview & Demo: Planning Analytics assistant experience | 30 min | Srikanth |
-| [Lab 0](./lab-00-setup/README.md) | Environment setup, access validation & MCP configuration | 30 min | Shan |
-| — | *Break* | *15 min* | — |
-| [Lab 1](./lab-01-bob-planning-analytics-mcp/README.md) | **Hands-On Lab 1:** Bob + Planning Analytics via MCP | 60 min | Srikanth |
-| — | Use case overview: FP&A Variance Autopilot | 10 min | Shan |
-| — | *Lunch / Break* | *60 min* | — |
-| [Lab 2](./lab-02-fpa-variance-autopilot/README.md) | **Hands-On Lab 2:** FP&A Variance Autopilot | 90 min | Shan |
-| [Your Scenario](./session-03-your-scenario/README.md) | Your Scenario — map the pattern to your own use case | 15 min | Shan |
-| — | Shareback + Wrap-up, next steps, and Q&A | 10 min | Mario, Lorenzo |
+| | Lab | What you do |
+|-|-----|-------------|
+| 🛠 | [Lab 0 — Setup](./lab-00-setup/README.md) | Install PA mode & skill, configure MCP — all via Bob |
+| 📊 | [Lab 1 — Bob + PA via MCP](./lab-01-bob-planning-analytics-mcp/README.md) | Query TM1 cubes, run variance analysis, build a model from CSV |
+| 🤖 | [Lab 2 — FP&A Variance Autopilot](./lab-02-fpa-variance-autopilot/README.md) | Multi-agent system: detect variances, investigate CRM/ERP root causes, generate CFO report |
+| 💡 | [Session 3 — Your Scenario](./session-03-your-scenario/README.md) | Adapt the autopilot pattern to your own use case |
 
 ---
 
-## Learning Objectives
+## Agenda
 
-By the end of this workshop, you will be able to:
-
-- Understand how **watsonx Orchestrate** enables agentic workflows for enterprise finance
-- Understand how **Bob** simplifies Planning Analytics development and analysis through conversational AI
-- Configure a **Planning Analytics MCP connection** in Bob to interact with TM1 data using natural language
-- Build and query a **TM1 cube** from CSV data using Bob's Planning Analytics mode
-- Run a complete **FP&A Variance Autopilot** — detecting variances, investigating root causes across CRM and ERP systems, generating AI explanations, and routing stakeholder alerts
-- Adapt the autopilot pattern to your own Planning Analytics scenario
+| Session | Duration |
+|---------|----------|
+| Welcome + watsonx Orchestrate overview | 40 min |
+| Bob overview + PA demo | 30 min |
+| **Lab 0** — Environment setup | 30 min |
+| *Break* | 15 min |
+| **Lab 1** — Bob + Planning Analytics via MCP | 60 min |
+| FP&A Variance Autopilot overview | 10 min |
+| *Lunch* | 60 min |
+| **Lab 2** — FP&A Variance Autopilot | 90 min |
+| **Session 3** — Your Scenario | 15 min |
+| Wrap-up + Q&A | 10 min |
 
 ---
 
 ## Prerequisites
 
-Before attending the workshop, ensure the following access is confirmed:
-
 | Requirement | Details |
 |-------------|---------|
-| **IBM Bob** | Access with minimum 200 coins — confirm with your workshop organiser |
-| **IBM Planning Analytics** | TechZone-provisioned environment — URL and credentials shared ahead of the session |
-| **watsonx Orchestrate** | Trial access or IBM SaaS tenant — confirm with your workshop organiser |
-| **IBM Bob IDE** | Download and install from [bob.ibm.com/download](https://bob.ibm.com/download) — confirm access with your workshop organiser |
+| **IBM Bob IDE** | [Download](https://bob.ibm.com/download) · min 200 coins |
+| **IBM Planning Analytics** | TechZone environment — URL + credentials from facilitator |
+| **watsonx Orchestrate** | Trial or SaaS tenant — confirm with facilitator |
 | **Laptop** | macOS or Windows with internet access |
-
-> **Access Clarification:** TechZone Planning Analytics environments will be shared with participants before the session. Bob and Orchestrate access models should be confirmed with the workshop organiser in advance.
 
 ---
 
 ## Repository Structure
 
 ```
-pa-bob-orchestrate-workshop/
-├── README.md                              ← You are here
-│
-├── lab-00-setup/
-│   └── README.md                          ← Environment setup and MCP configuration
-│
-├── lab-01-bob-planning-analytics-mcp/
-│   ├── README.md                          ← Lab 1 instructions
-│   ├── mcp.json                           ← MCP server configuration template
-│   └── assets/
-│       ├── fact_financial_data.csv        ← Financial fact data (loaded in Lab 1 Ex 5)
-│       └── dim_*.csv                      ← Dimension data files (Account, Dept, Time…)
-│
-├── lab-02-fpa-variance-autopilot/
-│   ├── README.md                          ← Lab 2 overview + sub-lab navigation
-│   ├── assets/
-│   │   ├── fpa-variance-agent.yaml        ← Full agent YAML (working version)
-│   │   ├── fpa-variance-agent-reference.yaml  ← Reference / answer key
-│   │   └── saleslens-api/                 ← SalesLens Mock CRM+ERP API (Node.js app)
-│   ├── lab-02-0-fpa-dataset-catchup/
-│   │   └── README.md                      ← Sub-lab: confirm FPA dataset
-│   ├── lab-02-1-pa-mcp-connection/
-│   │   └── README.md                      ← Sub-lab: configure PA MCP connection
-│   ├── lab-02-2-pa-agent/
-│   │   ├── README.md                      ← Sub-lab: PA Data Agent + MCP registration
-│   │   └── pa-data-agent.yaml             ← PA Data Agent definition
-│   ├── lab-02-3-saleslens-connection/
-│   │   └── README.md                      ← Sub-lab: configure SalesLens connection
-│   ├── lab-02-4-crm-erp-agents/
-│   │   ├── README.md                      ← Sub-lab: CRM & ERP agents + OpenAPI import
-│   │   ├── saleslens-openapi-spec.json    ← OpenAPI 3.0 specification
-│   │   ├── crm-agent.yaml                 ← CRM Agent definition
-│   │   └── erp-agent.yaml                 ← ERP Agent definition
-│   ├── lab-02-5-orchestrator/
-│   │   ├── README.md                      ← Sub-lab: Orchestrator agent instructions
-│   │   └── fpa-orchestrator-agent.yaml    ← Orchestrator Agent definition
-│   ├── lab-02-6-agentops/
-│   │   └── README.md                      ← Sub-lab: AgentOps tracing & evaluation
-│   ├── lab-02-7-chat-embed/
-│   │   ├── README.md                      ← Sub-lab (optional): HTML chat embed
-│   │   └── saleslens-wxo-embed.html       ← Embeddable chat UI
-│   └── lab-02-8-adk/
-│       └── README.md                      ← Sub-lab (bonus): Orchestrate ADK getting started
-│
-└── session-03-your-scenario/
-    └── README.md                          ← 15-min canvas + Bob prompt + shareback
+pa-bob-agents/
+├── lab-00-setup/                         ← Environment setup (Bob-assisted)
+├── lab-01-bob-planning-analytics-mcp/    ← Lab 1: Bob + PA via MCP
+│   └── assets/                           ← CSV files for Exercise 5
+├── lab-02-fpa-variance-autopilot/        ← Lab 2: FP&A Variance Autopilot
+│   ├── assets/                           ← Agent YAMLs + SalesLens API
+│   └── lab-02-0 through lab-02-8/        ← Sub-labs
+└── session-03-your-scenario/             ← Adapt to your use case
 ```
 
 ---
 
-## Featured Use Cases
-
-### Use Case 1 — Bob + Planning Analytics via MCP
-Bob uses the **Planning Analytics MCP integration** to interact with your TM1 environment through natural language. You can build TM1 models from CSV files, query cubes, perform variance analysis, detect outliers, and automate TurboIntegrator processes — all through conversation.
-
-### Use Case 2 — FP&A Variance Autopilot
-A **multi-agent watsonx Orchestrate system** monitors Planning Analytics for material budget variances (>$100K or >20%). When a variance is detected, the PA Data Agent retrieves the financial data, the CRM and ERP Context Agents investigate root causes from external systems, and the Orchestrator Agent synthesises a plain-language CFO-ready explanation and routes context-rich alerts to the right stakeholders — in under 5 minutes.
-
----
-
-## Expected Outcomes
-
-| Outcome | Delivered By |
-|---------|-------------|
-| Understand Orchestrate's role in agentic FP&A workflows | Presentation + Lab 2 |
-| Understand how Bob supports PA development and analysis | Presentation + Lab 1 |
-| Configure MCP and query TM1 using natural language | Lab 0 + Lab 1 |
-| Build a TM1 cube from CSV data via Bob | Lab 1 |
-| Run end-to-end variance detection and explanation | Lab 2 |
-| Adapt the autopilot to your own Planning Analytics use case | Your Scenario session |
-
----
-
-## Additional Resources
-
-- [IBM Planning Analytics Documentation](https://www.ibm.com/docs/en/planning-analytics)
-- [watsonx Orchestrate Documentation](https://www.ibm.com/docs/en/watsonx/watson-orchestrate)
-- [IBM Bob — Getting Started](https://www.ibm.com/products/bob)
-- [IBM Planning Analytics MCP Tools Reference](./lab-01-bob-planning-analytics-mcp/README.md#mcp-tools-reference)
-
----
-
-> **Made with IBM Bob** · Planning Analytics × watsonx Orchestrate Workshop · Version 1.0
+**→ [Start with Lab 0](./lab-00-setup/README.md)**
