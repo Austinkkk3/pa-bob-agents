@@ -13,24 +13,42 @@
 
 ---
 
-## Step 1 — Install Mode & Skill
+## Step 1 — Install the Skill
 
-Paste this into the Bob chat panel and hit Enter:
+**Download the skill folder first:**
+Go to [github.com/Austinkkk3/pa-bob-agents/tree/main/planning-analytics-skill](https://github.com/Austinkkk3/pa-bob-agents/tree/main/planning-analytics-skill), download the folder (or clone the repo), and note where it is on your computer.
+
+**Then drag the folder into Bob's chat panel**, and send this message:
 
 ```
-Run these commands to install the Planning Analytics mode and skill:
-
-git clone https://github.com/ibm-self-serve-assets/building-blocks.git /tmp/bb --depth=1 --filter=blob:none --sparse && \
-cd /tmp/bb && git sparse-checkout set optimize/budget-and-forecasting && \
-mkdir -p .bob/modes .bob/skills && \
-unzip -o "/tmp/bb/optimize/budget-and-forecasting/bob-modes/base-modes/planning-analytics-mode.zip" -d .bob/modes/planning-analytics && \
-mv .bob/modes/planning-analytics/custom_modes.yaml .bob/custom_modes.yaml && \
-unzip -o "/tmp/bb/optimize/budget-and-forecasting/bob-skills/planning-analytics-skill.zip" -d .bob/skills/
-
-Then restart Bob: Cmd+Shift+P → Bob: Restart
+I've uploaded the planning-analytics-skill folder.
+Please install it as a Bob skill:
+1. Create the directory .bob/skills/planning-analytics/ in my workspace
+2. Copy all files from the uploaded folder into .bob/skills/planning-analytics/
+3. Confirm the files SKILL.md, README.md, and USAGE-GUIDE.md are in place
+Then I'll restart Bob.
 ```
 
-✅ **Done when:** The mode selector shows **📊 Planning Analytics**.
+After Bob confirms, restart Bob: `Cmd+Shift+P` → **Bob: Restart**
+
+✅ **Done when:** Ask Bob `What skills do you have available?` — `planning-analytics` appears in the list.
+
+---
+
+## Step 1b — Install the Planning Analytics Mode *(optional)*
+
+The mode gives Bob deeper TM1 expertise and financial analysis workflows. Download `planning-analytics-mode.zip` from the [Building Blocks repo](https://github.com/ibm-self-serve-assets/building-blocks/tree/main/optimize/budget-and-forecasting/bob-modes/base-modes), then tell Bob:
+
+```
+I've downloaded planning-analytics-mode.zip.
+Please install it as a Bob mode:
+1. Create .bob/modes/ if it doesn't exist
+2. Unzip planning-analytics-mode.zip into .bob/modes/planning-analytics/
+3. Move .bob/modes/planning-analytics/custom_modes.yaml to .bob/custom_modes.yaml
+Then I'll restart Bob.
+```
+
+After Bob confirms, restart Bob. The mode selector should show **📊 Planning Analytics**.
 
 ---
 
