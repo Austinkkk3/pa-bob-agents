@@ -8,8 +8,10 @@
 ## Prerequisites
 
 - IBM Bob IDE installed and logged in ([download here](https://bob.ibm.com/download))
-- TechZone credentials from your facilitator: `HOST`, `PORT`, `TENANT_ID`, `USERNAME`, `PASSWORD`
+- TechZone credentials from your facilitator: `HOST`, `PORT`, `TENANT_ID`
 - Workshop folder open as your workspace root in Bob
+
+> ⚠️ **Planning Analytics version must be 2.1.20** — other versions are not compatible with the MCP tools used in this workshop.
 
 ---
 
@@ -17,6 +19,10 @@
 
 **Download the skill folder first:**
 Go to [github.com/Austinkkk3/pa-bob-agents/tree/main/planning-analytics-skill](https://github.com/Austinkkk3/pa-bob-agents/tree/main/planning-analytics-skill), download the folder (or clone the repo), and note where it is on your computer.
+
+> **Alternative:** Download directly from the IBM Building Blocks repo:
+> Skill ZIP → [planning-analytics-skill.zip](https://github.com/ibm-self-serve-assets/building-blocks/blob/main/automation/optimize/budget-and-forecasting/bob-skills/planning-analytics-skill.zip)
+> Mode ZIP → [planning-analytics-mode.zip](https://github.com/ibm-self-serve-assets/building-blocks/blob/main/automation/optimize/budget-and-forecasting/bob-modes/base-modes/planning-analytics-mode.zip)
 
 **Then drag the folder into Bob's chat panel**, and send this message:
 
@@ -54,21 +60,29 @@ After Bob confirms, restart Bob. The mode selector should show **📊 Planning A
 
 ## Step 2 — Configure MCP
 
-Paste this into Bob, replacing the five placeholders with your TechZone credentials:
+**Credentials for this workshop:**
+
+| Field | Value |
+|-------|-------|
+| Username | `pm` |
+| Password | `IBMDem0s` |
+
+Paste this into Bob, replacing `<TECHZONE_HOST>`, `<PORT>`, and `<TENANT_ID>` with the values from your facilitator:
 
 ```
-Configure my Planning Analytics MCP connection with these credentials:
+Configure my Planning Analytics MCP connection:
 - Host: <TECHZONE_HOST>
 - Port: <PORT>
 - Tenant ID: <TENANT_ID>
-- Username: <PA_USERNAME>
-- Password: <PA_PASSWORD>
+- Username: pm
+- Password: IBMDem0s
 
 Steps:
-1. Run: echo -n "<PA_USERNAME>:<PA_PASSWORD>" | base64
+1. Run this command and copy the output:
+   echo -n "pm:IBMDem0s" | base64
 2. Open Cmd+Shift+P → Bob: Open MCP Settings
 3. Replace the contents of mcp.json with the configuration from lab-00-setup/mcp.json,
-   substituting the correct HOST, PORT, TENANT_ID, and the base64 value you just generated
+   substituting HOST, PORT, TENANT_ID, and the base64 value from step 1
 4. Save and run Cmd+Shift+P → Bob: Restart
 ```
 
