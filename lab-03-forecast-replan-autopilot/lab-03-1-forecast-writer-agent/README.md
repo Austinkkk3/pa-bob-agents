@@ -33,42 +33,54 @@ This agent has one job: **turn analysis into action.**
 
 ---
 
-## Step 3 — Add the PA MCP Server
+## Step 3 — Add Two MCP Servers
 
-The Forecast Writer Agent needs the same MCP connection as the PA Data Agent from Lab 2.
+The Forecast Writer Agent needs **two** MCP connections: one to read cube data, one to execute TI processes.
+
+> **Why two?** The PA MCP exposes cube tools (read/query) and server tools (TI process execution) on separate endpoints.
+
+### 3a — Cube MCP (for reading back values)
 
 1. Toolset section → **Add tool** → **MCP server** → **Add MCP server** → **Remote MCP server**
 2. Fill in:
 
 | Field | Value |
 |-------|-------|
-| **Name** | `planning-analytics-mcp` |
+| **Name** | `planning-analytics-cube-mcp` |
 | **Server URL** | `http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp` |
 | **Transport type** | `Streamable HTTP` |
 | **Connection** | `Planning Analytics (Basic Auth)` |
 
 3. **Connect** — you should see: *"MCP server is ready and tools are available."*
 
-> If the connection is already saved from Lab 2, click **Existing MCP server** and select `planning-analytics-mcp`.
+> If already saved from Lab 2, click **Existing MCP server** and select it.
+
+### 3b — Server MCP (for executing TI processes)
+
+1. **Add tool** → **MCP server** → **Add MCP server** → **Remote MCP server**
+2. Fill in:
+
+| Field | Value |
+|-------|-------|
+| **Name** | `planning-analytics-server-mcp` |
+| **Server URL** | `http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/mcp` |
+| **Transport type** | `Streamable HTTP` |
+| **Connection** | `Planning Analytics (Basic Auth)` |
+
+3. **Connect** — confirm tools are available.
+
+> **Note:** The server MCP URL ends in `/mcp` not `/cube/mcp`. Ask your facilitator for the exact URL if unsure.
 
 ---
 
-## Step 4 — Select the 3 Write Tools
+## Step 4 — Select the 4 Tools
 
-The Forecast Writer Agent only needs three tools — no read tools, no CRM/ERP:
-
-| Tool | Purpose |
-|------|---------|
-| `get_available_tm1_servers` | Confirm the target server is reachable |
-| `get_cube_dimensions` | Verify cube structure before writing |
-| `execute_mdx_and_get_view` | Read current V3 values to confirm writes succeeded |
-
-> **Note:** Direct cell write is handled through the PA MCP's TI process execution tool. The agent calls `execute_tm1_processes_asynchronously` with the pre-built `FPA_Write_Forecast` process (created for you in Lab 3 setup).
-
-Also select:
-| Tool | Purpose |
-|------|---------|
-| `execute_tm1_processes_asynchronously` | Write forecast values via TI process |
+| Tool | From | Purpose |
+|------|------|---------|
+| `get_available_tm1_servers` | Cube MCP | Confirm the target server is reachable |
+| `get_cube_dimensions` | Cube MCP | Verify cube structure before writing |
+| `execute_mdx_and_get_view` | Cube MCP | Read V3 values back to confirm writes succeeded |
+| `execute_tm1_processes_asynchronously` | **Server MCP** | Write forecast values via `FPA_Write_Forecast` TI process |
 
 Click **Add to agent**.
 

@@ -29,9 +29,9 @@ instructions: >
   - Net quarter impact = $0
 
   Example — NA Sales REV-001, Jan 2024, slipped $200K to Feb:
-    Jan V3 = $325,000  (actual — no in-month recovery)
-    Feb V3 = $500,000 + $200,000 = $700,000
-    Mar V3 = $500,000  (unchanged)
+    Jan FC-Q1 = $325,000  (actual — no in-month recovery)
+    Feb FC-Q1 = $500,000 + $200,000 = $700,000
+    Mar FC-Q1 = $500,000  (unchanged)
 
   STRUCTURAL RUN-RATE CHANGE (new recurring cost: headcount, contract, subscription):
   - Current period forecast = actual amount (cost already incurred)
@@ -39,9 +39,9 @@ instructions: >
   - Do NOT carry beyond the current quarter unless instructed
 
   Example — NA Sales OPEX-001, Jan 2024, +$8,500/mo new hire + $18K one-time PO:
-    Jan V3 = $145,000  (actual — PO + hire already in)
-    Feb V3 = $120,000 + $8,500 = $128,500  (hire continues, PO does not repeat)
-    Mar V3 = $120,000 + $8,500 = $128,500
+    Jan FC-Q1 = $145,000  (actual — PO + hire already in)
+    Feb FC-Q1 = $120,000 + $8,500 = $128,500  (hire continues, PO does not repeat)
+    Mar FC-Q1 = $120,000 + $8,500 = $128,500
 
   ONE-TIME OVERSPEND (unbudgeted PO, no recurring element):
   - Current period forecast = actual amount
@@ -53,12 +53,18 @@ instructions: >
 
   Write procedure — follow this order exactly:
   1. Summarise the adjustments you are about to make (period, account, dept, old value, new value).
-  2. Ask: "Shall I write these to FPA_Variance on smartco as V3?" — wait for confirmation.
+  2. Ask: "Shall I write these to FPA_Variance on smartco as scenario FC-Q1, version V3?" — wait for confirmation.
   3. On confirmation, call execute_tm1_processes_asynchronously with process FPA_Write_Forecast
-     for each value, passing parameters: time_id, account_id, dept_id, version='V3', amount.
-  4. After all writes, call execute_mdx_and_get_view to read back V3 values for the
+     for each cell, with parameters:
+       pTime = period (e.g. "2024-01")
+       pAccount = account ID (e.g. "REV-001")
+       pDept = department ID (e.g. "DEPT-NA-SALES")
+       pScenario = "FC-Q1"
+       pVersion = "V3"
+       pAmount = the numeric forecast value
+  4. After all writes, call execute_mdx_and_get_view to read back FC-Q1 / V3 values for the
      affected periods and confirm they match what you wrote.
-  5. Report: "✅ Written to PA — [n] cells updated. V3 confirmed." with a summary table.
+  5. Report: "✅ Written to PA — [n] cells updated. FC-Q1 / V3 confirmed." with a summary table.
 
   Error handling:
   - If execute_tm1_processes_asynchronously returns an error:
