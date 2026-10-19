@@ -1,13 +1,13 @@
 # Lab 2.2 — Create the PA Data Agent
 
-**Duration:** ~30 minutes  
+**Duration:** ~20 minutes
 **Prerequisite:** [Lab 2.1](../lab-02-1-pa-mcp-connection/README.md) ✅
 
 ---
 
 ## Goal
 
-Build the **PA Data Agent** — queries `FPA_Variance` in Planning Analytics via MCP and returns flagged variance data. This agent has no CRM or ERP tools. It becomes a sub-agent of the orchestrator in Lab 2.5.
+Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_Variance` in Planning Analytics via MCP, calculates variances, reads the embedded root cause explanations from the cube, and returns a complete CFO-ready report. No CRM or ERP systems needed.
 
 ---
 
@@ -48,24 +48,17 @@ Build the **PA Data Agent** — queries `FPA_Variance` in Planning Analytics via
 
 ---
 
-## Step 4 — Select the 10 PA Tools
-
-Select all of the following:
+## Step 4 — Select the 5 PA Tools
 
 | Tool | Purpose |
 |------|---------|
-| `get_available_tm1_servers` | List TM1 servers |
-| `list_cubes_with_ai_analysis_metadata` | List cubes with pre-analysis status |
-| `get_cube_dimensions` | Get cube dimensions |
-| `get_cube_sample_members` | Get sample members |
-| `get_data_from_data_explorer` | Natural language query |
-| `execute_mdx_and_get_view` | MDX fallback query |
-| `get_cubes_that_may_answer_query` | Find relevant cubes |
-| `lookup_potential_members` | Search dimension members |
-| `perform_outlier_detection` | Outlier detection |
-| `get_outlier_summary` | Outlier summary |
+| `get_available_tm1_servers` | Confirm smartco is reachable |
+| `get_cube_dimensions` | Confirm FPA_Variance dimension names |
+| `get_cube_sample_members` | Retrieve valid member IDs |
+| `execute_mdx_and_get_view` | Query budget vs actual data |
+| `lookup_potential_members` | Resolve member names if needed |
 
-Click **Add to agent**. Do not add any CRM or ERP tools.
+Click **Add to agent**.
 
 ---
 
@@ -75,14 +68,14 @@ Click **Add to agent**. Do not add any CRM or ERP tools.
 ```
 List available TM1 servers and show the dimensions of the FPA_Variance cube.
 ```
-Expected: `DemoGuide` server, 5 dimensions.
+Expected: `smartco` server, 6 dimensions.
 
-**Test 5.2 — Variance with flagging:**
+**Test 5.2 — Full variance report:**
 ```
-Show me January 2024 actual vs budget for all departments in the FPA_Variance cube.
-Flag any variance greater than $100,000 or 20%.
+Show me the FP&A variance report for January 2024 on the FPA_Variance cube on smartco.
+Flag material variances and include root cause explanations.
 ```
-Expected: table with NA Sales flagged 🔴, Sales OpEx flagged 🟡.
+Expected: 🔴 NA Sales REV-001 (-$175K, root cause text), 🟡 NA Sales OPEX-001 (+$25K, root cause text).
 
 ---
 
@@ -93,8 +86,9 @@ Expected: table with NA Sales flagged 🔴, Sales OpEx flagged 🟡.
 | "Connect" fails | Verify team credential is in **Live** environment; check URL has no trailing slash |
 | Tool list empty after connect | Ask facilitator to verify MCP endpoint is enabled on TechZone instance |
 | 401 in Preview | Confirm team credential shows ✅ in Live environment |
-| "Cube not found" | Send `List available cubes on DemoGuide` to check cube name |
+| "Cube not found" | Send `List available cubes on smartco` to check cube name |
+| Root cause shows empty | Expected for some rows — variance_explanation only exists for flagged variances |
 
 ---
 
-**→ [Lab 2.3 — Configure the SalesLens API Connection](../lab-02-3-saleslens-connection/README.md)**
+**→ [Lab 2.5 — Create the Orchestrator Agent](../lab-02-5-orchestrator/README.md)**

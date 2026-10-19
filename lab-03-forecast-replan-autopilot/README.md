@@ -1,83 +1,147 @@
-# Lab 3 — Forecast Replan Autopilot
+# Lab 3 — Forecast Replan with Bob
 
-**Duration:** 60 minutes (core path: Labs 3.0–3.3)  
-**Tools:** watsonx Orchestrate · IBM Planning Analytics · SalesLens Mock API  
-**Prerequisite:** [Lab 2](../lab-02-fpa-variance-autopilot/README.md) ✅
-
----
-
-## The Business Problem
-
-Your FP&A team just ran the January variance analysis (Lab 2). They found two material variances:
-
-- 🔴 NA Sales revenue missed budget by **-$175K (-35%)** — deal slippage
-- 🟡 NA Sales OpEx exceeded budget by **+$25K (+20.8%)** — unbudgeted PO + new hire
-
-**What happens next in most companies:**
-
-> FP&A analyst opens PA, manually adjusts the Q1 forecast line-by-line, writes a commentary email to the CFO, and flags the VP Sales for a pipeline review call. This takes 2–3 hours and happens the next morning.
-
-**What Lab 3 builds:**
-
-The same outcome in under 2 minutes, triggered by a single prompt — with every number written back directly into Planning Analytics.
+**Duration:** 30 minutes  
+**Mode:** 📊 Planning Analytics  
+**Prerequisite:** [Lab 1 Exercise 5](../lab-01-bob-planning-analytics-mcp/README.md) ✅ (`FPA_Variance` cube built)
 
 ---
 
-## What You Will Build
+## What You Will Do
 
-A **Forecast Replan Autopilot** that:
+Lab 1 taught you how to **read** data from Planning Analytics. This lab teaches you how to **change** it.
 
-1. **Reads** the variance analysis output from Lab 2 (PA data + CRM/ERP context)
-2. **Calculates** the right forecast adjustment for each material variance
-3. **Writes the new forecast back** into the `FPA_Variance` cube in Planning Analytics
-4. **Generates** a CFO-ready replan summary with a confidence score
+You will use Bob to:
+1. Find material budget variances in `FPA_Variance`
+2. Understand the root cause of each variance
+3. Calculate adjusted forecast values
+4. Write the new forecast back into Planning Analytics
+5. Verify the update
 
-Manual process: 2–3 hours. With the autopilot: **under 2 minutes.**
+One conversation. No external tools. No code.
+
+| Exercise | Task | Time |
+|----------|------|------|
+| [1](#exercise-1--find-the-variances) | Find material variances | 5 min |
+| [2](#exercise-2--understand-the-root-cause) | Understand what caused them | 5 min |
+| [3](#exercise-3--calculate-the-reforecast) | Calculate adjusted forecast values | 8 min |
+| [4](#exercise-4--write-back-to-pa) | Write the new forecast into PA | 7 min |
+| [5](#exercise-5--verify) | Verify and compare versions | 5 min |
+
+Switch to **📊 Planning Analytics** mode before starting.
 
 ---
 
-## Architecture
+## Exercise 1 — Find the Variances
 
 ```
-User prompt
-    │
-    ▼
-Forecast Replan Autopilot (Orchestrator — upgraded)
-    ├── PA Data Agent         → reads variance data (from Lab 2)
-    ├── CRM Context Agent     → explains revenue misses (from Lab 2)
-    ├── ERP Context Agent     → explains cost overruns (from Lab 2)
-    └── Forecast Writer Agent → NEW: writes adjusted forecast back to PA
+Show me January 2024 actual vs budget for all departments in the 
+FPA_Variance cube on smartco. Flag any variance greater than $100,000 or 20%.
 ```
 
-The only new piece is the **Forecast Writer Agent**. Everything from Lab 2 is reused as-is.
+You should see two flagged variances:
+- 🔴 NA Sales / Enterprise Software Revenue: -$175K (-35%)
+- 🟡 NA Sales / Sales & Marketing OpEx: +$25K (+20.8%)
+
+```
+Which of these variances is more urgent and why?
+```
 
 ---
 
-## Sub-Labs
+## Exercise 2 — Understand the Root Cause
 
-| Sub-Lab | Deliverable | Time |
-|---------|-------------|------|
-| [3.0](lab-03-0-scenario/README.md) | Understand the replan scenario | 5 min |
-| [3.1](lab-03-1-forecast-writer-agent/README.md) | Forecast Writer Agent live | 20 min |
-| [3.2](lab-03-2-orchestrator-upgrade/README.md) | Upgrade the Orchestrator to include the Writer | 15 min |
-| [3.3](lab-03-3-end-to-end/README.md) | Run the full Forecast Replan end-to-end | 20 min |
+```
+For the NA Sales revenue miss of -$175K in January 2024:
+The root cause is deal slippage — two enterprise deals moved to February.
+Acme Corp ($120K) delayed by customer procurement, TechStart ($80K) by a budget freeze.
+Both deals are confirmed for February. Is this a timing issue or a structural problem?
+```
 
-**→ [Start with Lab 3.0](lab-03-0-scenario/README.md)**
+```
+For the NA Sales OpEx overspend of +$25K in January 2024:
+The root cause is an unbudgeted trade show PO ($18K) plus a new hire 
+that started in December ($8,500/month recurring). 
+What kind of forecast adjustment does this require?
+```
 
----
-
-## What Changes in PA
-
-After the autopilot runs, the `FPA_Variance` cube on `smartco` will have a new version:
-
-| Version | Description |
-|---------|-------------|
-| `V1` | Original Actual |
-| `V2` | Original Budget |
-| `V3` | **Q1 Reforecast** ← written by this lab |
-
-`V3` reflects the adjusted forecast, with deal slippage timing corrections and OpEx run-rate updates applied automatically.
+> Bob will classify each variance as **timing** (recovers next month) or **structural** (recurring run-rate change). This classification drives the reforecast calculation in Exercise 3.
 
 ---
 
-**→ [Continue to Session 3](../session-03-your-scenario/README.md)**
+## Exercise 3 — Calculate the Reforecast
+
+```
+Based on the root causes above, calculate the Q1 2024 reforecast for NA Sales.
+Apply these rules:
+- Revenue slippage (timing): move the slipped amount to the recovery month
+- Recurring cost increase (structural): apply the new run-rate to remaining months
+- One-time cost (non-recurring): no adjustment to future months
+Show me the full reforecast table before writing anything.
+```
+
+Expected calculation:
+
+| Period | Account | Budget (V2) | Reforecast (FC-Q1 / V3) | Change | Reason |
+|--------|---------|-------------|------------------------|--------|--------|
+| Jan 2024 | REV-001 | $500,000 | $325,000 | -$175K | Matches actual — deals moved out |
+| Feb 2024 | REV-001 | $500,000 | $700,000 | +$200K | Recovery: Acme $120K + TechStart $80K |
+| Mar 2024 | REV-001 | $500,000 | $500,000 | — | Unchanged |
+| Jan 2024 | OPEX-001 | $120,000 | $145,000 | +$25K | Matches actual |
+| Feb 2024 | OPEX-001 | $120,000 | $128,500 | +$8.5K | New hire run-rate, no repeat PO |
+| Mar 2024 | OPEX-001 | $120,000 | $128,500 | +$8.5K | New hire run-rate continues |
+
+```
+What is the net Q1 impact on revenue and OpEx from these adjustments?
+```
+
+---
+
+## Exercise 4 — Write Back to PA
+
+Once you're happy with the numbers:
+
+```
+Write these reforecast values to the FPA_Variance cube on smartco.
+Use scenario FC-Q1 and version V3 for all cells.
+Write one cell at a time using the FPA_Write_Forecast process and confirm each write.
+```
+
+> Bob will call `execute_tm1_processes_asynchronously` with the `FPA_Write_Forecast` TI process for each cell. You will see it confirm each write before moving to the next.
+
+Watch for the confirmation after each cell:
+```
+✅ Written: REV-001 / DEPT-NA-SALES / FC-Q1 / 2024-01 / V3 = 325,000
+✅ Written: REV-001 / DEPT-NA-SALES / FC-Q1 / 2024-02 / V3 = 700,000
+...
+```
+
+---
+
+## Exercise 5 — Verify
+
+```
+Show me V1 (Actual), V2 (Budget), and V3 (Reforecast) side by side for 
+NA Sales REV-001 and OPEX-001 across January, February, and March 2024 
+in FPA_Variance on smartco. Use scenario FC-Q1.
+```
+
+Expected: V3 values match exactly what was calculated in Exercise 3.
+
+```
+Summarise the Q1 reforecast in one paragraph suitable for a CFO update.
+```
+
+---
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| "Process FPA_Write_Forecast not found" | Ask your facilitator to run the Lab 3 setup (takes 2 min) |
+| V3 shows 0 after write | Ask Bob: `Read back V3 for REV-001 / DEPT-NA-SALES / FC-Q1 / 2024-01 in FPA_Variance` to confirm |
+| Bob calculates wrong recovery amount | Re-read Exercise 3 — confirm the total slipped value is $200K ($120K + $80K) |
+
+---
+
+**→ [Lab 2 — FP&A Variance Autopilot](../lab-02-fpa-variance-autopilot/README.md)** *(if you want to go further with watsonx Orchestrate)*  
+**→ [Session 3 — Your Scenario](../session-03-your-scenario/README.md)**
