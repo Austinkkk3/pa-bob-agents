@@ -33,7 +33,10 @@ Create the `planning-analytics-basic` connection and store team credentials in w
 
 1. **Manage → Security → Team credentials** tab → **Live** environment → **Add team credential**
 2. Select `Planning Analytics (Basic Auth)` from the dropdown
-3. Enter the username and password provided by your facilitator
+3. Enter the credentials provided by your facilitator:
+   - **Username:** `pm`
+   - **Password:** provided on the session credential sheet
+   - **Server URL:** `http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp`
 4. **Connect and save** — status should show ✅
 
 > If the connection already exists, skip to Step 2 and verify credentials are set.

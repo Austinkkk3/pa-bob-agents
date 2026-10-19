@@ -16,14 +16,14 @@ Confirm `FPA_Variance` cube is loaded and spot-check the key variances the autop
 ## Check in Bob (📊 Planning Analytics mode)
 
 ```
-List available cubes on the DemoGuide server.
+List available cubes on the smartco server.
 Show me the dimensions of the FPA_Variance cube.
 ```
 
-Expected: `Account · Department · Scenario · Time · Version`
+Expected: `FPA_Account · FPA_Department · FPA_Scenario · FPA_Time · FPA_Version · FPA_Measures`
 
 ```
-Show me January 2024 actual vs budget for all departments in FPA_Variance.
+Show me January 2024 actual vs budget for all departments in FPA_Variance on smartco.
 Flag any variance greater than $100,000 or 20%.
 ```
 
@@ -31,9 +31,9 @@ Expected variances:
 
 | Department | Account | Variance | Flag |
 |-----------|---------|----------|------|
-| NA Sales | Enterprise Software Revenue | -$175K (-35%) | 🔴 |
-| NA Sales | Sales & Marketing OpEx | +$25K (+20.8%) | 🟡 |
-| EMEA Sales | Enterprise Software Revenue | +$40K (+10.5%) | ✅ |
+| DEPT-NA-SALES | REV-001 | -$175K (-35%) | 🔴 |
+| DEPT-NA-SALES | OPEX-001 | +$25K (+20.8%) | 🟡 |
+| DEPT-EMEA-SALES | REV-001 | +$40K (+10.5%) | ✅ |
 
 > If the cube is missing, ask your facilitator or re-run Lab 1 Exercise 5 (~8 min).
 
