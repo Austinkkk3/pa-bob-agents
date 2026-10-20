@@ -30,7 +30,7 @@ Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_
 |-------|-------|
 | **Name** | `PA Data Agent` (prefix with your initials on a shared tenant) |
 | **Description** | Queries the FPA_Variance cube in Planning Analytics via MCP. Returns budget vs actual data with material variance flags. Does not call CRM or ERP systems. |
-| **Model** | `ibm/granite-3-3-8b-instruct` |
+| **Model** | `granite-4-h-small` |
 
 **ADK:** `orchestrate agents import --file ./pa-data-agent.yaml`
 

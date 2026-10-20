@@ -21,7 +21,7 @@ This agent has one job: **turn analysis into action.**
 |-------|-------|
 | **Name** | `Forecast Writer Agent` |
 | **Description** | Receives variance and root cause context from the orchestrator. Calculates adjusted forecast values based on variance classification (timing shift vs structural run-rate). Writes V3 forecast values back to the FPA_Variance cube in Planning Analytics via MCP. Does not analyse variances or query CRM/ERP directly. |
-| **Model** | `ibm/granite-3-3-8b-instruct` |
+| **Model** | `granite-4-h-small` |
 
 **ADK:** `orchestrate agents import --file ./forecast-writer-agent.yaml`
 
@@ -63,13 +63,13 @@ The Forecast Writer Agent needs **two** MCP connections: one to read cube data, 
 | Field | Value |
 |-------|-------|
 | **Name** | `planning-analytics-server-mcp` |
-| **Server URL** | `http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/mcp` |
+| **Server URL** | `http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/analysis/mcp` |
 | **Transport type** | `Streamable HTTP` |
 | **Connection** | `Planning Analytics (Basic Auth)` |
 
 3. **Connect** — confirm tools are available.
 
-> **Note:** The server MCP URL ends in `/mcp` not `/cube/mcp`. Ask your facilitator for the exact URL if unsure.
+> **Note:** The server MCP URL ends in `/analysis/mcp`. The cube MCP ends in `/cube/mcp`. Do not confuse the two — `execute_tm1_processes_asynchronously` is only available on the analysis/mcp endpoint.
 
 ---
 
@@ -105,8 +105,8 @@ Expected output:
 ```
 V3 Forecast Adjustments — NA Sales / REV-001:
   Jan 2024: $325,000  (was $500,000 — matches actual, deals moved to Feb)
-  Feb 2024: $700,000  (was $500,000 — +$200K recovery from slipped deals)
-  Net Q1 impact: $0 (timing shift only)
+  Feb 2024: $720,000  (was $520,000 from CSV — +$200K recovery from slipped deals)
+  Net Q1 revenue impact: +$25,000 (Jan miss -$175K + Feb recovery +$200K)
 ```
 
 **Test 5.3 — Write to PA:**
@@ -122,7 +122,7 @@ Expected: Agent confirms each cell written, then reads back V3 to verify.
 
 | Symptom | Fix |
 |---------|-----|
-| `execute_tm1_processes_asynchronously` not in tool list | Scroll — it is in the server/cube MCP; ensure you connected to the correct MCP endpoint |
+| `execute_tm1_processes_asynchronously` not in tool list | This tool is only on the **analysis/mcp** endpoint, not the cube/mcp endpoint. Ensure Step 3b URL ends in `/agentic-ai/analysis/mcp`. |
 | "Process not found" when writing | Run Lab 3 setup: ask your facilitator to confirm `FPA_Write_Forecast` TI process exists on smartco |
 | Write succeeds but V3 still shows 0 | Check `FPA_Version` dimension — confirm `V3` leaf element exists; if not, facilitator needs to re-run dimension build |
 | Agent tries to read CRM/ERP directly | It should not — if it does, the instructions import did not apply correctly; re-paste the YAML |

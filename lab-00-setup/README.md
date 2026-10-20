@@ -43,7 +43,7 @@ After Bob confirms, restart Bob: `Cmd+Shift+P` → **Bob: Restart**
 
 ## Step 1b — Install the Planning Analytics Mode *(optional)*
 
-The mode gives Bob deeper TM1 expertise and financial analysis workflows. Download `planning-analytics-mode.zip` from the [Building Blocks repo](https://github.com/ibm-self-serve-assets/building-blocks/tree/main/optimize/budget-and-forecasting/bob-modes/base-modes), then tell Bob:
+The mode gives Bob deeper TM1 expertise and financial analysis workflows. Download `planning-analytics-mode.zip` from the [Building Blocks repo](https://github.com/ibm-self-serve-assets/building-blocks/tree/main/automation/optimize/budget-and-forecasting/bob-modes/base-modes), then tell Bob:
 
 ```
 I've downloaded planning-analytics-mode.zip.

@@ -35,7 +35,7 @@ In Orchestrate **Agents** list, confirm **Active** status for:
 |-------|-------|
 | **Name** | `FP&A Variance Autopilot` |
 | **Description** | Orchestrator for FP&A variance analysis. Delegates to PA Data Agent to detect material budget variances in Planning Analytics and produce a CFO-ready report with root cause explanations from the cube. |
-| **Model** | `ibm/granite-3-3-8b-instruct` |
+| **Model** | `granite-4-h-small` |
 
 **ADK:** `orchestrate agents import --file ./fpa-orchestrator-agent.yaml`
 

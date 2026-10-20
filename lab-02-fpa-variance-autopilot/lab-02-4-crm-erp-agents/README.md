@@ -23,7 +23,7 @@ Build two focused sub-agents. Each gets 3 tools from the SalesLens OpenAPI spec.
 |-------|-------|
 | **Name** | `CRM Context Agent` |
 | **Description** | Queries the SalesLens CRM API for deal slippage and pipeline context. Returns root cause narratives for revenue variances. Does not query Planning Analytics or ERP. |
-| **Model** | `ibm/granite-3-3-8b-instruct` |
+| **Model** | `granite-4-h-small` |
 
 **ADK:** `orchestrate agents import --file ./crm-agent.yaml`
 
@@ -63,7 +63,7 @@ Expected: 2 slipped deals ($200K), context summary, pipeline coverage 1.7x.
 |-------|-------|
 | **Name** | `ERP Context Agent` |
 | **Description** | Queries the SalesLens ERP API for unbudgeted purchase orders and headcount events. Returns root cause narratives for OpEx and COGS variances. Does not query Planning Analytics or CRM. |
-| **Model** | `ibm/granite-3-3-8b-instruct` |
+| **Model** | `granite-4-h-small` |
 
 **ADK:** `orchestrate agents import --file ./erp-agent.yaml`
 

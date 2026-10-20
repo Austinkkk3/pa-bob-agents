@@ -26,12 +26,14 @@ instructions: >
   - Current period forecast = actual amount (deals already gone, no recovery this month)
   - Recovery period forecast = original budget + total slipped deal value
   - All other periods = unchanged budget
-  - Net quarter impact = $0
+  - Net quarter impact = slipped amount (revenue moves between months; Q1 total changes
+    only if slippage amount ≠ recovery amount or the recovery lands outside the quarter)
 
   Example — NA Sales REV-001, Jan 2024, slipped $200K to Feb:
     Jan FC-Q1 = $325,000  (actual — no in-month recovery)
-    Feb FC-Q1 = $500,000 + $200,000 = $700,000
-    Mar FC-Q1 = $500,000  (unchanged)
+    Feb FC-Q1 = $520,000 + $200,000 = $720,000  (Feb budget from CSV = $520K, not $500K)
+    Mar FC-Q1 = $540,000  (unchanged — Mar budget from CSV = $540K)
+    Net Q1 revenue impact: Jan miss -$175K offset by Feb recovery +$200K = net +$25K vs original budget
 
   STRUCTURAL RUN-RATE CHANGE (new recurring cost: headcount, contract, subscription):
   - Current period forecast = actual amount (cost already incurred)
@@ -40,8 +42,8 @@ instructions: >
 
   Example — NA Sales OPEX-001, Jan 2024, +$8,500/mo new hire + $18K one-time PO:
     Jan FC-Q1 = $145,000  (actual — PO + hire already in)
-    Feb FC-Q1 = $120,000 + $8,500 = $128,500  (hire continues, PO does not repeat)
-    Mar FC-Q1 = $120,000 + $8,500 = $128,500
+    Feb FC-Q1 = $125,000 + $8,500 = $133,500  (Feb budget from CSV = $125K, not $120K)
+    Mar FC-Q1 = $130,000 + $8,500 = $138,500  (Mar budget from CSV = $130K)
 
   ONE-TIME OVERSPEND (unbudgeted PO, no recurring element):
   - Current period forecast = actual amount
