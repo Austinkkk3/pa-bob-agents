@@ -11,13 +11,24 @@ Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_
 
 ---
 
+> ⚠️ **Shared tenant — prefix your agent name with your initials.**
+> This workshop uses a shared Orchestrate environment. If two participants import an agent with the same name, the second import overwrites the first. Use your initials as a prefix everywhere: agent name in the UI **and** the `name:` field inside the YAML before importing.
+> Example: `JD_pa_data_agent` instead of `pa_data_agent`.
+
+> 📋 **FPA_Variance data convention:**
+> `V1` = Actual · `V2` = Budget · `V3` = Reforecast
+> `Scenario = "Actual"` stores actuals · `Scenario = "Budget"` stores budget
+> MDX queries must use CROSSJOIN on both Version and Scenario to retrieve both in one call — filtering only by V1 in the WHERE clause returns zero for Budget rows.
+
+---
+
 ## Step 1 — Create the Agent
 
 **Orchestrate UI:** Build → All agents → Create agent
 
 | Field | Value |
 |-------|-------|
-| **Name** | `PA Data Agent` |
+| **Name** | `PA Data Agent` (prefix with your initials on a shared tenant) |
 | **Description** | Queries the FPA_Variance cube in Planning Analytics via MCP. Returns budget vs actual data with material variance flags. Does not call CRM or ERP systems. |
 | **Model** | `ibm/granite-3-3-8b-instruct` |
 
@@ -61,6 +72,9 @@ Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_
 Click **Add to agent**.
 
 ---
+
+> 📍 **Use Build → Preview to test, not the Chat page.**
+> The Chat page only shows agents that have been published to Live. Find your agent under **Build → All agents**, open it, and use the **Preview** panel on the right to test — no publish step needed.
 
 ## Step 5 — Test the Agent
 

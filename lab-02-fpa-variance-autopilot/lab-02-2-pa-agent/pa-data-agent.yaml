@@ -37,18 +37,23 @@ instructions: >
 
   - Step 2 — Query budget vs actual:
       Use execute_mdx_and_get_view. Always use MDX — do not use data explorer.
-      Query both BUD (budget) and ACT (actual) for the requested period.
-      Use V2 for budget and V1 for actual.
+      Version convention: V1 = Actual, V2 = Budget, V3 = Reforecast (FC-Q1).
+      Scenario convention: "Actual" for actuals, "Budget" for budget.
+      To get both in one query, use CROSSJOIN on both Version and Scenario dimensions.
       Example MDX:
         SELECT
-          {[FPA_Scenario].[FPA_Scenario].[BUD], [FPA_Scenario].[FPA_Scenario].[ACT]} ON COLUMNS,
-          CrossJoin(
+          CROSSJOIN(
+            {[FPA_Scenario].[FPA_Scenario].[Actual], [FPA_Scenario].[FPA_Scenario].[Budget]},
+            {[FPA_Version].[FPA_Version].[V1], [FPA_Version].[FPA_Version].[V2]}
+          ) ON COLUMNS,
+          CROSSJOIN(
             {[FPA_Department].[FPA_Department].MEMBERS},
             {[FPA_Account].[FPA_Account].MEMBERS}
           ) ON ROWS
         FROM [FPA_Variance]
-        WHERE ([FPA_Time].[FPA_Time].[<period>], [FPA_Version].[FPA_Version].[V1],
-               [FPA_Measures].[FPA_Measures].[Amount])
+        WHERE ([FPA_Time].[FPA_Time].[<period>], [FPA_Measures].[FPA_Measures].[Amount])
+      Note: Read Actual from (Actual scenario, V1) and Budget from (Budget scenario, V2).
+            Do NOT put both scenarios in the WHERE clause — use the CROSSJOIN above.
 
   - Step 3 — Calculate variances:
       For each row: Variance $ = Actual - Budget
@@ -90,13 +95,7 @@ instructions: >
   - RECOMMENDED ACTIONS: numbered list
   - Target: under 600 words
 
-tools:
-  - ibm-pa-tools-tz-cube:get_available_tm1_servers
-  - ibm-pa-tools-tz-cube:get_cube_dimensions
-  - ibm-pa-tools-tz-cube:get_cube_sample_members
-  - ibm-pa-tools-tz-cube:execute_mdx_and_get_view
-  - ibm-pa-tools-tz-cube:lookup_potential_members
-
 # Lab 2.2 — PA Data Agent (simplified — no SalesLens dependency)
 # Used as sub-agent by fpa-variance-autopilot (Lab 2.5)
+# Tools are added via the Orchestrate UI after import (MCP server → cube/mcp endpoint).
 # Made with IBM Bob — Planning Analytics × watsonx Orchestrate Workshop

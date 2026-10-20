@@ -1,7 +1,7 @@
 # Lab 1 — Bob + Planning Analytics via MCP
 
-**Duration:** 45 minutes  
-**Mode:** 📊 Planning Analytics  
+**Duration:** 45 minutes
+**Mode:** 📊 Planning Analytics
 **Prerequisite:** [Lab 0](../lab-00-setup/README.md) ✅
 
 ---
@@ -17,6 +17,19 @@
 | [5](#exercise-5--build-a-tm1-model-from-csv) | Build a cube and load data from CSV | 7 min |
 
 Switch to **📊 Planning Analytics** mode before starting.
+
+---
+
+## Step 0 — Warm Up the PA Query Engine (30 seconds)
+
+> ⚠️ **Do this before Exercise 2.** On a freshly started TechZone instance the PA grid service (query engine) uses lazy initialisation and may not be running yet. MDX queries will return a `409` error until it is warmed up.
+
+1. Open the PAW URL from your TechZone reservation in a browser and log in as `pm` / `IBMDem0s`
+2. Go to **Data and Models** → **New workbench** → expand any server → right-click any cube → **Add new view**
+3. Wait ~30 seconds
+4. Return to Bob — queries will now work
+
+This only needs to be done **once per session**.
 
 ---
 

@@ -2,6 +2,8 @@
 
 **Duration:** 6 hours · Intermediate · Instructor-led
 
+> 🚀 **New here?** Start with [QUICK-START.md](./QUICK-START.md) — credentials, 3-step validation, and key things to know on one page.
+
 ---
 
 ## What You'll Build
