@@ -80,3 +80,22 @@ If `FPA_Write_Forecast` is missing, see [`lab-03-forecast-replan-autopilot/FACIL
 | `<PA_USERNAME>` | Lab 0, 1, 2, 3 | `pm` |
 | `<PA_PASSWORD>` | Lab 0, 1, 2, 3 | `IBMDem0s` |
 | `<ORCHESTRATE_URL>` | Lab 2 | Per-participant Orchestrate tenant |
+
+---
+
+## Troubleshooting
+
+### PA grid service returns 409 on MDX queries
+
+**Symptom:** Bob returns `Status code: 409` when querying cube data, even though the MCP connection is working and TI processes run fine.
+
+**Cause:** The PA grid service (query engine) uses lazy initialisation and may not be running when the TM1 server first starts.
+
+**Fix (< 1 minute):**
+1. Open the Planning Analytics Workspace (PAW) URL from the TechZone reservation page
+2. Log in as `pm` / `IBMDem0s`
+3. Go to **Data and Models** → **New workbench** → expand any server → right-click any cube → **Add new view**
+4. Wait ~30 seconds
+5. Return to Bob and retry the query — the grid service will now be warm
+
+**Why it works:** Opening a workbench view in PAW sends a real UI request to the grid service, which kickstarts it. This only needs to be done once per session.
