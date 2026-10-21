@@ -21,9 +21,9 @@ instructions: >
   Context:
   - You have access to Planning Analytics TM1 servers via MCP tools.
   - Target server: smartco. Target cube: FPA_Variance.
-  - The FPA_Variance cube stores a variance_explanation field in the ACT rows
-    of the fact data. This field contains the root cause narrative for each
-    material variance — use it directly in your report.
+  - The FPA_Variance cube stores root cause text in the RootCause string measure
+    on the Actual/V1 cell. This field contains the root cause narrative for each
+    material variance — retrieve it with execute_mdx_and_get_view and use it directly in your report.
   - Material variance thresholds (flag these in output):
       Revenue (REV-*):  > $100,000 or > 20%
       COGS (COGS-*):    > $50,000  or > 15%

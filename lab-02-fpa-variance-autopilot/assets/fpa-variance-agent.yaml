@@ -38,7 +38,7 @@ instructions: >
     * Department dimension (Sales regions: DEPT-NA-SALES, DEPT-EMEA-SALES,
       DEPT-APAC-SALES, DEPT-LATAM-SALES; Functions: DEPT-PROD-ENG, DEPT-CLOUD-OPS,
       DEPT-PROF-SVC, DEPT-CUST-SUC, DEPT-MARKETING, DEPT-FINANCE, DEPT-HR, DEPT-IT)
-    * Scenario dimension (BUD = Budget, ACT = Actual, FC-Q2 = Q2 Forecast, PY-ACT = Prior Year)
+    * Scenario dimension (Budget = Budget/V2, Actual = Actual/V1, FC-Q1..FC-Q4 = Forecast, PY-ACT = Prior Year)
     * Time dimension (Monthly periods: 2024-01 through 2026-06)
     * Version dimension (V1 = Actuals, V2 = Budget, V4 = Forecast)
   - You understand financial planning and can interpret:

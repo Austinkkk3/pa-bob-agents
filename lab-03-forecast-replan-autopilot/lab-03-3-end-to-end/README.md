@@ -42,7 +42,7 @@ Total time: **under 2 minutes.**
 📊 FP&A Variance Analysis + Replan — January 2024
 
 Server: smartco | Cube: FPA_Variance | Period: 2024-01
-Sub-agents: pa_data_agent · crm_context_agent · erp_context_agent · forecast_writer_agent
+Sub-agents: pa_data_agent · forecast_writer_agent
 
 MATERIAL VARIANCES DETECTED: 4
 
