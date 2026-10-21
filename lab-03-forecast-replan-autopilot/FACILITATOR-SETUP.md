@@ -71,14 +71,17 @@ Leave Prolog, Metadata, and Data procedures empty.
 Run the following MDX in Bob (Planning Analytics mode) to confirm V3 is writable:
 
 ```
-Show me V1, V2, and V3 for REV-001 and OPEX-001, DEPT-NA-SALES, 
-scenario FC-Q1, January 2024 in FPA_Variance on smartco.
+For NA Sales REV-001 and OPEX-001, January through March 2024, show:
+- Actual (scenario Actual, version V1)
+- Budget (scenario Budget, version V2)
+- Reforecast (scenario FC-Q1, version V3)
+side by side in FPA_Variance on smartco.
 ```
 
 Expected (before Lab 3 runs):
-- V1 = actual values (325,000 for REV-001)
-- V2 = budget values (500,000 for REV-001)  
-- V3 = either 0 or the test value you wrote in setup verification
+- V1 Actual = 325,000 for REV-001 Jan; 145,000 for OPEX-001 Jan
+- V2 Budget = 500,000 for REV-001 Jan; 120,000 for OPEX-001 Jan
+- V3 FC-Q1 = 0 (empty — written by participants during Lab 3)
 
 ---
 
@@ -104,9 +107,9 @@ Show me all non-zero V3 values in FPA_Variance on smartco for scenario FC-Q1.
 | Endpoint | Tools available |
 |----------|----------------|
 | `.../v0/agentic-ai/cube/mcp` | cube read/query tools (`execute_mdx_and_get_view`, etc.) |
-| `.../v0/agentic-ai/server/mcp` (or `mcp` root) | server tools including `execute_tm1_processes_asynchronously` |
+| `.../v0/agentic-ai/analysis/mcp` | server tools including `execute_tm1_processes_asynchronously`, `get_tm1_server_process_execution_error_logs` |
 
-> The Forecast Writer Agent in Lab 3.1 must connect to the **server MCP endpoint**, not the cube endpoint, to access `execute_tm1_processes_asynchronously`.
+> The Forecast Writer Agent in Lab 3.1 must connect to the **analysis MCP endpoint** (`/agentic-ai/analysis/mcp`), not the cube endpoint, to access `execute_tm1_processes_asynchronously`.
 
 ---
 

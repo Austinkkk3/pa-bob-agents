@@ -1,4 +1,5 @@
 account_id,account_name,account_type,account_category,parent_account,is_revenue,is_expense,gl_code
+ROOT,Total P&L,Total,Total,,0,0,0000-000
 REV-001,Finished Goods Revenue,Revenue,Product Revenue,TOTAL-REV,1,0,4000-100
 REV-002,Contract Manufacturing Rev,Revenue,Service Revenue,TOTAL-REV,1,0,4000-200
 REV-003,Spare Parts Revenue,Revenue,Recurring Revenue,TOTAL-REV,1,0,4000-300

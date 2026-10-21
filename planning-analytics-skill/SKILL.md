@@ -161,6 +161,103 @@ Output:
 - Offer actionable recommendations
 - Use executive-friendly language
 
+### Data Quality
+- Note missing or zero values
+- Explain consolidation levels used
+- Identify preliminary vs final data
+- Flag potential data issues
+
+## Example Workflows
+
+### Workflow 1: Monthly Variance Review
+```
+1. User: "Show me March compensation variance by department"
+2. Skill: Queries pre-analyzed Compensation cube
+3. Output: 
+   - Budget vs Actual comparison
+   - Variance amounts and percentages
+   - Department hierarchy
+   - Key findings (e.g., "Marketing 15% over budget")
+   - Recommendations
+```
+
+### Workflow 2: Trend Analysis
+```
+1. User: "What are the revenue trends over the last year?"
+2. Skill: Retrieves 12 months of revenue data
+3. Output:
+   - Time-series visualization data
+   - Growth rates by period
+   - Seasonal patterns identified
+   - Trend direction and strength
+```
+
+### Workflow 3: Outlier Investigation
+```
+1. User: "Find unusual sales in Q4"
+2. Skill: Runs outlier detection algorithms
+3. Output:
+   - Detected anomalies with coordinates
+   - Statistical significance
+   - Potential causes
+   - Recommended actions
+```
+
+## Success Criteria
+
+A successful Planning Analytics skill interaction includes:
+
+✅ **Query Understanding**
+- Correctly interprets business intent
+- Maps to appropriate TM1 structures
+- Applies intelligent defaults
+
+✅ **Data Retrieval**
+- Returns relevant, accurate data
+- Proper hierarchical structure
+- Appropriate aggregation levels
+
+✅ **Business Insights**
+- Clear, actionable findings
+- Executive-friendly language
+- Contextual explanations
+- Data quality notes
+
+✅ **Professional Presentation**
+- Clean formatting
+- Logical organization
+- Visual hierarchy
+- Comprehensive yet concise
+
+## Limitations
+
+### Current Limitations
+- Requires pre-analyzed cubes for semantic queries
+- Cannot create new cubes or dimensions
+- Cannot write TurboIntegrator processes
+- Limited to read-only operations on cube data
+
+### Workarounds
+- Use Advanced mode for cube creation
+- Use Advanced mode for TI process development
+- Combine with Advanced mode for complete solutions
+
+## Integration with Other Modes
+
+### Complementary to Advanced Mode
+- **Advanced Mode**: Build infrastructure (cubes, dimensions, processes)
+- **Planning Analytics Skill**: Explore and analyze the data
+
+### Typical Workflow
+1. Use Advanced mode to create cubes from CSV data
+2. Activate Planning Analytics skill for data exploration
+3. Generate insights and reports for business users
+4. Return to Advanced mode for structural changes
+
 ## Version
 
 Current version: 1.0.0
+
+---
+
+**Ready to explore your Planning Analytics data?** Activate this skill and ask business questions in natural language!

@@ -89,7 +89,11 @@ Expected: `smartco` server, 6 dimensions.
 Show me the FP&A variance report for January 2024 on the FPA_Variance cube on smartco.
 Flag material variances and include root cause explanations.
 ```
-Expected: 🔴 NA Sales REV-001 (-$175K, root cause text), 🟡 NA Sales OPEX-001 (+$25K, root cause text).
+Expected: 4 material variances using agent thresholds (Revenue >25% or >$150K; Expense >20% or >$75K):
+- 🔴 HIGH — NA Sales REV-001: -$175K (-35%), root cause text from cube
+- 🔴 HIGH — NA Sales OPEX-001: +$25K (+20.8%), root cause text from cube
+- 🟡 MEDIUM — IT OPEX-007: +$14K (+18.7%), root cause text from cube
+- ✅ FAVORABLE — NA Sales OPEX-004: -$17.5K (-35%)
 
 ---
 
@@ -101,7 +105,7 @@ Expected: 🔴 NA Sales REV-001 (-$175K, root cause text), 🟡 NA Sales OPEX-00
 | Tool list empty after connect | Ask facilitator to verify MCP endpoint is enabled on TechZone instance |
 | 401 in Preview | Confirm team credential shows ✅ in Live environment |
 | "Cube not found" | Send `List available cubes on smartco` to check cube name |
-| Root cause shows empty | Expected for some rows — variance_explanation only exists for flagged variances |
+| Root cause shows empty | Expected for non-flagged rows — RootCause text is stored only where variance_flag=1 in the CSV |
 
 ---
 

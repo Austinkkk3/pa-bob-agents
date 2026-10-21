@@ -75,13 +75,20 @@ instructions: >
   - Query the variance data:
     * If pre-analyzed: use get_data_from_data_explorer with natural language query
     * If not pre-analyzed: use execute_mdx_and_get_view with constructed MDX
-    * Always retrieve both Budget (BUD/V2) and Actual (ACT/V1) for the target period
+    * Always retrieve both Budget (Budget/V2) and Actual (Actual/V1) for the target period
     * Sample MDX structure:
         SELECT
-          {[Scenario].[Scenario].[BUD], [Scenario].[Scenario].[ACT]} ON COLUMNS,
-          {[Department].[Department].MEMBERS} ON ROWS
+          CROSSJOIN(
+            {[FPA_Scenario].[FPA_Scenario].[Actual], [FPA_Scenario].[FPA_Scenario].[Budget]},
+            {[FPA_Version].[FPA_Version].[V1], [FPA_Version].[FPA_Version].[V2]}
+          ) ON COLUMNS,
+          CROSSJOIN(
+            {[FPA_Department].[FPA_Department].MEMBERS},
+            {[FPA_Account].[FPA_Account].[REV-001]}
+          ) ON ROWS
         FROM [FPA_Variance]
-        WHERE ([Account].[Account].[REV-001], [Time].[Time].[2024-01], [Version].[Version].[V1])
+        WHERE ([FPA_Time].[FPA_Time].[2024-01], [FPA_Measures].[FPA_Measures].[Amount])
+    * Note: Read Actual from (Actual, V1) and Budget from (Budget, V2).
 
   - Calculate and classify variances:
     * Variance amount = Actual - Budget
@@ -155,35 +162,32 @@ instructions: >
   MATERIAL VARIANCES DETECTED: 2
 
   ─────────────────────────────────────────
-  🔴 HIGH — NA Sales | Enterprise Software Revenue
+  🔴 HIGH — NA Sales | Finished Goods Revenue (REV-001)
   ─────────────────────────────────────────
     Budget: $500,000 | Actual: $325,000
     Variance: -$175,000 (-35.0%) ← Unfavorable
 
-    Root Cause: Two enterprise deals slipped from January to February.
-    Acme Corp ($120K) delayed by customer procurement process; TechStart
-    ($80K) impacted by client budget freeze. Both remain in pipeline.
+    Root Cause: Two major deals slipped to February: Acme Corp $120K
+    (procurement delayed) and TechStart $80K (budget freeze).
+    Timing-related variance.
 
     Classification: Timing-related slippage — no structural issue
     Forecast Action: None required — deals expected in February
-    CRM Action: Confirm February close dates for both opportunities
 
   ─────────────────────────────────────────
-  🟡 MEDIUM — NA Sales | Sales & Marketing OpEx
+  🔴 HIGH — NA Sales | Sales & Distribution OPEX (OPEX-001)
   ─────────────────────────────────────────
     Budget: $120,000 | Actual: $145,000
     Variance: +$25,000 (+20.8%) ← Unfavorable
 
-    Root Cause: Unplanned trade show participation ($18K) and
-    December headcount carrying into January. Trade show was
-    reactive to competitive activity.
+    Root Cause: Unplanned trade show PO ($18K, one-time) and a new
+    Enterprise AE hired in December ($8.5K/month, recurring).
 
-    Classification: Controllable overspend — review recommended
-    Forecast Action: Consider +$15K Q1 OpEx adjustment
-    Management Action: Assess trade show ROI; review HC plan
+    Classification: Mixed — $18K one-time, $8.5K recurring
+    Forecast Action: Feb–Mar V3 = real budget + $8.5K/mo run-rate
 
   ─────────────────────────────────────────
-  ✅ FAVORABLE — EMEA Sales | Enterprise Software Revenue
+  ✅ FAVORABLE — EMEA Sales | Finished Goods Revenue (REV-001)
   ─────────────────────────────────────────
     Budget: $380,000 | Actual: $420,000
     Variance: +$40,000 (+10.5%) ← Favorable

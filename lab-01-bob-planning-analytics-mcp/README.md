@@ -1,6 +1,6 @@
 # Lab 1 — Bob + Planning Analytics via MCP
 
-**Duration:** 45 minutes
+**Duration:** 60 minutes
 **Mode:** 📊 Planning Analytics
 **Prerequisite:** [Lab 0](../lab-00-setup/README.md) ✅
 
@@ -54,17 +54,20 @@ Show me the dimensions and sample members for the [cube name] cube
 ## Exercise 2 — Query
 
 > Use a pre-analyzed cube from Exercise 1. If none are available, skip to Exercise 3.
+> If `FPA_Variance` on `smartco` is pre-analyzed, use it for all prompts below.
 
 ```
-Show me revenue data for Q1 by department
-```
-
-```
-Show me budget vs actual revenue for January 2024, broken down by department
+Show me revenue data for Q1 2024 by department in the FPA_Variance cube on smartco
 ```
 
 ```
-Which departments had the largest revenue gap between budget and actual?
+Show me budget vs actual revenue for January 2024, broken down by department,
+in the FPA_Variance cube on smartco
+```
+
+```
+Which departments had the largest revenue gap between budget and actual
+in the FPA_Variance cube on smartco?
 ```
 
 ---
@@ -72,7 +75,8 @@ Which departments had the largest revenue gap between budget and actual?
 ## Exercise 3 — Variance Analysis
 
 ```
-Perform a full variance analysis on revenue for January 2024 across all departments.
+Perform a full variance analysis on revenue for January 2024 across all departments
+in the FPA_Variance cube on smartco.
 Identify all variances greater than $100,000 or greater than 20%, and explain what you find.
 ```
 
@@ -81,26 +85,37 @@ Save this variance view as "Jan2024_Revenue_Variance" for future reference
 ```
 
 ```
-Compare January 2024 actual revenue to January 2023 actual revenue by department.
-Show year-over-year growth rates.
+Compare January 2024 actual revenue (scenario Actual, version V1, period 2024-01)
+with prior-year actual (scenario PY-ACT, version V1, period 2023-01)
+for NA Sales, EMEA Sales and APAC Sales, account REV-001,
+in the FPA_Variance cube on smartco. Show year-over-year growth rates.
 ```
+
+> Expected YoY: NA 325K vs 450K (-27.8%); EMEA 420K vs 350K (+20.0%); APAC 275K vs 250K (+10.0%).
 
 ---
 
 ## Exercise 4 — Outlier & Impact Analysis
 
+> **Set expectations before running:**
+> - Outlier detection on 6 departments × 1 month typically returns "no outliers detected" — too few points. Try the wider slice below for better results.
+> - `perform_impact_analysis` returns unlabeled x/y scores; the two-tool chain with `get_impact_analysis_summary` may not work. The **PDF report** is the main deliverable for this exercise.
+
 ```
-Using the January 2024 revenue data, detect any statistical outliers across departments.
+Detect statistical outliers in REV-001 revenue for January–June 2024
+across all departments in the FPA_Variance cube on smartco.
 Explain what you find in business terms.
 ```
 
 ```
-What are the key drivers of the revenue variance in January 2024?
+What are the key drivers of the revenue variance in January 2024
+in the FPA_Variance cube on smartco?
 Which factors have the highest impact on the total variance?
 ```
 
 ```
 Generate a PDF analysis report for the January 2024 revenue data
+in the FPA_Variance cube on smartco
 ```
 
 ---
@@ -109,24 +124,36 @@ Generate a PDF analysis report for the January 2024 revenue data
 
 The CSV files are in [`lab-01-bob-planning-analytics-mcp/assets/`](./assets/).
 
+> ⚠️ **This workshop uses a shared `smartco` server.** Lab 2 and Lab 3 depend on a shared `FPA_Variance` cube — do NOT modify or delete it. Build your own private copy using your initials as a prefix.
+
 ```
 I have CSV files in the lab-01-bob-planning-analytics-mcp/assets/ folder for an FP&A model.
 Read the dimension files (dim_account.csv, dim_department.csv, dim_scenario.csv,
 dim_time.csv, dim_version.csv) and the fact file (fact_financial_data.csv).
 
-Create a complete TM1 model on the smartco server:
-- Create all required dimensions with their elements and attributes
-- Create a cube called FPA_Variance with those dimensions
-- Write a TurboIntegrator process to load the fact data
+Create a complete TM1 model on the smartco server using MY_INITIALS as a prefix
+(replace MY_INITIALS with your actual initials, e.g. "JD"):
+- Create dimensions named MY_INITIALS_FPA_Account, MY_INITIALS_FPA_Department, etc.
+- Store descriptive CSV columns as text attributes (not aliases)
+- Create a cube called MY_INITIALS_FPA_Variance with those dimensions,
+  with FPA_Measures as the last dimension
+- The measures dimension must have two members: Amount (Numeric) and RootCause (String)
+- Write a TurboIntegrator process to load all 280 fact rows:
+  - Use CellPutN for Amount values
+  - Use CellPutS for RootCause text where variance_explanation is not empty
 - Execute the process and confirm the data loaded correctly
+- Do NOT modify or delete FPA_Variance or any FPA_* object
 ```
 
-> Bob will take 2–4 minutes to create and execute the TurboIntegrator process. It will show progress.
+> **Note:** Bob embeds all data rows directly in TI code (no file data source). Check that the load confirms 280 cells written.
 
 Verify the load:
 ```
-Show me NA Sales actual revenue for Q1 2024 across all accounts from the FPA_Variance cube
+Show me NA Sales actual revenue for Q1 2024 across all accounts
+from the MY_INITIALS_FPA_Variance cube on smartco
 ```
+
+> Expected: REV-001 Q1 = 1,545,000; REV-003 Q1 = 565,000; Total Revenue Q1 = 2,110,000.
 
 ---
 

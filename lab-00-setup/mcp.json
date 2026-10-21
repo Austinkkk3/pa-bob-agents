@@ -2,9 +2,9 @@
   "mcpServers": {
     "ibm-pa-tools-tz-server": {
       "type": "streamable-http",
-      "url": "http://<TECHZONE_HOST>:<PORT>/api/<YOUR_TENANT_ID>/v0/agentic-ai/analysis/mcp",
+      "url": "http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/analysis/mcp",
       "headers": {
-        "Authorization": "Basic <YOUR_BASE64_CREDENTIALS>",
+        "Authorization": "Basic <BASE64_CREDENTIALS>",
         "Accept": "text/event-stream",
         "Cache-Control": "no-cache"
       },
@@ -16,16 +16,15 @@
         "create_tm1_process",
         "get_tm1_server_process_status",
         "get_tm1_server_process_execution_error_logs",
-        "delete_tm1_process",
         "get_tm1_processes",
         "get_tm1_process_details"
       ]
     },
     "ibm-pa-tools-tz-cube": {
       "type": "streamable-http",
-      "url": "http://<TECHZONE_HOST>:<PORT>/api/<YOUR_TENANT_ID>/v0/agentic-ai/cube/mcp",
+      "url": "http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp",
       "headers": {
-        "Authorization": "Basic <YOUR_BASE64_CREDENTIALS>",
+        "Authorization": "Basic <BASE64_CREDENTIALS>",
         "Accept": "text/event-stream",
         "Cache-Control": "no-cache"
       },
@@ -37,6 +36,7 @@
         "lookup_potential_members",
         "get_cube_sample_members",
         "get_cube_dimensions",
+        "get_cube_dimensions_with_metadata",
         "execute_mdx_and_get_view",
         "list_cubes_with_ai_analysis_metadata",
         "get_tm1_cubes",
@@ -46,7 +46,11 @@
         "perform_impact_analysis",
         "perform_outlier_detection",
         "get_outlier_summary",
-        "get_impact_analysis_summary"
+        "get_impact_analysis_summary",
+        "save_mdx_view",
+        "get_saved_view",
+        "list_cube_views",
+        "get_MDX_for_recommended_view"
       ]
     }
   }

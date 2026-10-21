@@ -21,9 +21,9 @@ instructions: >
   Context:
   - You have access to Planning Analytics TM1 servers via MCP tools.
   - Target server: smartco. Target cube: FPA_Variance.
-  - The FPA_Variance cube stores a variance_explanation field in the ACT rows
-    of the fact data. This field contains the root cause narrative for each
-    material variance — use it directly in your report.
+  - The FPA_Variance cube stores root cause text in the string measure `RootCause`
+    on the Actual/V1 cell. Query it separately for each material variance and use
+    it verbatim in your report.
   - Material variance thresholds (flag these in output):
       Revenue (REV-*):  > $100,000 or > 20%
       COGS (COGS-*):    > $50,000  or > 15%
@@ -68,9 +68,18 @@ instructions: >
 
   - Step 4 — Read root cause explanations:
       For each material variance, run a second MDX query to retrieve the
-      variance_explanation value stored in the ACT scenario for that cell.
+      RootCause string measure on the Actual/V1 cell.
+      Example MDX for Jan 2024, NA Sales:
+        SELECT {[FPA_Measures].[FPA_Measures].[RootCause]} ON 0,
+               {[FPA_Account].[FPA_Account].[REV-001],
+                [FPA_Account].[FPA_Account].[OPEX-001]} ON 1
+        FROM [FPA_Variance]
+        WHERE ([FPA_Time].[FPA_Time].[2024-01],
+               [FPA_Department].[FPA_Department].[DEPT-NA-SALES],
+               [FPA_Scenario].[FPA_Scenario].[Actual],
+               [FPA_Version].[FPA_Version].[V1])
       Use this verbatim as the Root Cause in your report.
-      If no explanation exists for a cell, write "No explanation recorded."
+      If no RootCause text exists for a cell, write "No explanation recorded."
 
   - Step 5 — Generate variance report:
       For each material variance write a section:
@@ -84,6 +93,10 @@ instructions: >
   - Member not found: call lookup_potential_members with partial name.
   - No data returned: verify the time period format matches cube members (e.g. "2024-01").
   - MDX syntax error: re-check dimension names using get_cube_dimensions.
+  - execute_mdx_and_get_view returns "Failed to encode cube view to markdown/HTML":
+      Usually means a member name does not exist — check with lookup_potential_members.
+      Also caused by: NON EMPTY combined with a CROSSJOIN on rows — remove NON EMPTY.
+      Columns: use CROSSJOIN, not explicit tuple sets ({(A,B),(C,D)}).
   - Always recover automatically before asking the user for help.
 
   Response format:

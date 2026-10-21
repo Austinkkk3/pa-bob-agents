@@ -29,10 +29,8 @@ In the **Trace** panel you should see sub-agent calls in this order:
 
 | # | Sub-agent | What it does |
 |---|-----------|-------------|
-| 1 | `pa_data_agent` | Reads Jan 2024 actuals vs budget → returns variance table |
-| 2 | `crm_context_agent` | Gets deal slippage for NA Sales REV-001 |
-| 3 | `erp_context_agent` | Gets PO + headcount context for NA Sales OPEX-001 |
-| 4 | `forecast_writer_agent` | Calculates V3 values → writes to PA → reads back confirmation |
+| 1 | `pa_data_agent` | Reads Jan 2024 actuals vs budget → returns variance table with root cause text from cube |
+| 2 | `forecast_writer_agent` | Calculates V3 values → writes to PA → reads back confirmation |
 
 Total time: **under 2 minutes.**
 
@@ -46,23 +44,22 @@ Total time: **under 2 minutes.**
 Server: smartco | Cube: FPA_Variance | Period: 2024-01
 Sub-agents: pa_data_agent · crm_context_agent · erp_context_agent · forecast_writer_agent
 
-MATERIAL VARIANCES DETECTED: 2
+MATERIAL VARIANCES DETECTED: 4
 
 ─────────────────────────────────────────────────────
-🔴 HIGH — NA Sales | Enterprise Software Revenue
+🔴 HIGH — NA Sales | Finished Goods Revenue (REV-001)
 ─────────────────────────────────────────────────────
   Budget: $500,000 | Actual: $325,000
   Variance: -$175,000 (-35.0%) ← Unfavorable
 
-  Root Cause: 2 deals totalling $200K slipped from January to February.
-  Acme Corp ($120K) delayed by customer procurement; TechStart ($80K) impacted
-  by budget freeze. Both remain in pipeline — high close probability.
+  Root Cause: Two major deals slipped to February: Acme Corp $120K (procurement delayed)
+  and TechStart $80K (budget freeze). Timing-related variance.
 
   Classification: Timing slippage — no structural issue
   Forecast Action: Move $200K to February; January V3 = Actual
 
 ─────────────────────────────────────────────────────
-🔴 HIGH — NA Sales | Sales & Marketing OpEx
+🔴 HIGH — NA Sales | Sales & Distribution OPEX (OPEX-001)
 ─────────────────────────────────────────────────────
   Budget: $120,000 | Actual: $145,000
   Variance: +$25,000 (+20.8%) ← Unfavorable
@@ -74,18 +71,37 @@ MATERIAL VARIANCES DETECTED: 2
   Forecast Action: Feb–Mar V3 = real budget + $8.5K/mo run-rate
 
 ─────────────────────────────────────────────────────
-✅ FAVORABLE — EMEA Sales | Enterprise Software Revenue
+✅ FAVORABLE — EMEA Sales | Finished Goods Revenue (REV-001)
   +$40,000 (+10.5%) — Early close of GlobalTech. No action required.
 
 ─────────────────────────────────────────────────────
 SUMMARY
   Revenue Variance (Net): -$135,000 (-8.8% vs budget)
-  OpEx Variance (Net):    +$25,000  (+7.5% vs budget)
-  Material Variances: 2 (2 High, 0 Medium)
+─────────────────────────────────────────────────────
+🟡 MEDIUM — IT | IT Infrastructure
+─────────────────────────────────────────────────────
+  Budget: $75,000 | Actual: $89,000
+  Variance: +$14,000 (+18.7%) ← Unfavorable
+
+  Root Cause: Emergency security patch deployment and additional AWS costs.
+
+  Classification: One-time — patch cycle complete
+  Forecast Action: No future adjustment required
+
+─────────────────────────────────────────────────────
+✅ FAVORABLE — NA Sales | Sales Commissions
+  -$17,500 (-35.0%) — Lower commissions correlated to revenue miss. No action required.
+
+─────────────────────────────────────────────────────
+SUMMARY
+  Revenue Variance (Net): -$147,000 (-7.4% vs budget — all departments)
+  OpEx Variance (Net):    +$58,500  (+4.7% vs budget — all departments)
+  Material Variances: 4 (2 High, 1 Medium, 1 Favorable)
 
 RECOMMENDED ACTIONS:
   1. [HIGH] Confirm Feb close — Acme Corp + TechStart (VP Sales)
   2. [HIGH] Review NA Sales OpEx run-rate for Q1 re-forecast (FP&A)
+  3. [MEDIUM] Monitor IT infrastructure costs — confirm patch cycle complete
 
 ─────────────────────────────────────────────────────
 📝 V3 FORECAST REPLAN
@@ -94,18 +110,19 @@ RECOMMENDED ACTIONS:
   Period   | Account  | Dept        | V2 Budget | V3 Forecast | Change    | Rationale
   ---------|----------|-------------|-----------|-------------|-----------|----------
   2024-01  | REV-001  | DEPT-NA-S   | $500,000  | $325,000    | -$175K    | Timing — matches actual
-  2024-02  | REV-001  | DEPT-NA-S   | $520,000  | $720,000    | +$200K    | Slipped deal recovery (budget from CSV = $520K)
+  2024-02  | REV-001  | DEPT-NA-S   | $520,000  | $720,000    | +$200K    | Slipped deal recovery
+  2024-03  | REV-001  | DEPT-NA-S   | $540,000  | $540,000    |   —       | Unchanged
   2024-01  | OPEX-001 | DEPT-NA-S   | $120,000  | $145,000    | +$25K     | Matches actual
-  2024-02  | OPEX-001 | DEPT-NA-S   | $125,000  | $133,500    | +$8.5K    | New hire run-rate (budget from CSV = $125K)
-  2024-03  | OPEX-001 | DEPT-NA-S   | $130,000  | $138,500    | +$8.5K    | New hire run-rate (budget from CSV = $130K)
+  2024-02  | OPEX-001 | DEPT-NA-S   | $125,000  | $133,500    | +$8.5K    | New hire run-rate
+  2024-03  | OPEX-001 | DEPT-NA-S   | $130,000  | $138,500    | +$8.5K    | New hire run-rate
 
-  ✅ 5 cells written to FPA_Variance / smartco / V3 — all confirmed.
+  ✅ 6 cells written to FPA_Variance / smartco / V3 — all confirmed.
 
   Q1 Net Impact:
     Revenue: +$25,000 net (Jan -$175K timing miss; Feb +$200K recovery = net +$25K vs Q1 budget)
-    OpEx:    +$42,000 over Q1 (+$25K Jan actuals + $17K Feb–Mar run-rate)
+    OpEx:    +$42,000 over Q1 (+$25K Jan actuals + $8.5K Feb + $8.5K Mar run-rate)
 
-Confidence: 0.95 | Alerts: VP Sales (email), FP&A Manager (dashboard) | V3 written: ✅
+Confidence: 0.95 | V3 written: ✅
 ```
 
 ---
@@ -127,9 +144,9 @@ Expected: V1 (Actual), V2 (Budget), and V3 (Reforecast) all visible, with V3 val
 
 | Prompt | What to watch for |
 |--------|------------------|
-| `Run variance analysis for March 2024 on FPA_Variance on smartco. Focus on APAC Sales. Replan if material.` | APAC -$85K → CRM Sino-Digital → timing shift → V3 Apr recovery |
-| `Run variance analysis for March 2025 on FPA_Variance on smartco. Include Product Engineering.` | +$45K Prod Eng OpEx → ERP NVIDIA GPU + ML contractor → structural run-rate |
-| `Run the January 2024 analysis but do NOT update the forecast.` | All 4 variance steps, but agent asks before writing — test the confirmation gate |
+| `Run variance analysis for March 2024 on FPA_Variance on smartco. Focus on APAC Sales. Replan if material.` | 🔴 APAC -$85K (-30.4%) → root cause: China regulatory delay ($90K) → timing → V3 Mar=195K, Apr recovery 280K+90K=370K |
+| `Run variance analysis for March 2024 on FPA_Variance on smartco. Focus on Finance department. Replan if material.` | 🔴 Finance OPEX-008 +$13K (+37.1%) → root cause: SOX audit fees → one-time → Mar V3=48K, no future change |
+| `Run the January 2024 analysis but do NOT update the forecast.` | 4 material variances shown, forecast_writer_agent NOT called — test the confirmation gate |
 
 ---
 
@@ -137,7 +154,7 @@ Expected: V1 (Actual), V2 (Budget), and V3 (Reforecast) all visible, with V3 val
 
 | Symptom | Fix |
 |---------|-----|
-| Orchestrator calls `forecast_writer_agent` before variance report is done | Check that Step 8 in orchestrator instructions says "after delivering the variance report" |
+| Orchestrator calls `forecast_writer_agent` before variance report is done | Check that STEP 7 in orchestrator instructions says "only if user asked to replan" |
 | `forecast_writer_agent` writes wrong values | Ensure it received the full variance table from the orchestrator, not a partial summary |
 | V3 shows in PA but with wrong period | Check TI process parameter names — `time_id` must match cube members exactly (e.g. `2024-01`, not `Jan 2024`) |
 | Agent asks for confirmation before writing even when prompt said "update the forecast" | Expected behaviour — the agent summarises calculations and asks once before writing. Say "yes" to proceed. |

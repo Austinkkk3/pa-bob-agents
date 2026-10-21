@@ -38,9 +38,10 @@ Show me January 2024 actual vs budget for all departments in the
 FPA_Variance cube on smartco. Flag any variance greater than $100,000 or 20%.
 ```
 
-You should see two flagged variances:
-- 🔴 NA Sales / Enterprise Software Revenue: -$175K (-35%)
-- 🟡 NA Sales / Sales & Marketing OpEx: +$25K (+20.8%)
+You should see three flagged variances (threshold: >$100K or >20%):
+- 🔴 NA Sales / Finished Goods Revenue (REV-001): -$175K (-35%)
+- 🔴 NA Sales / Sales & Distribution OPEX (OPEX-001): +$25K (+20.8%)
+- ✅ NA Sales / Sales Commissions (OPEX-004): -$17.5K (-35%) — Favorable
 
 ```
 Which of these variances is more urgent and why?
@@ -79,16 +80,16 @@ Apply these rules:
 Show me the full reforecast table before writing anything.
 ```
 
-Expected calculation:
+Expected calculation (budgets come from the CSV — Feb/Mar are not flat $500K/$120K):
 
 | Period | Account | Budget (V2) | Reforecast (FC-Q1 / V3) | Change | Reason |
 |--------|---------|-------------|------------------------|--------|--------|
 | Jan 2024 | REV-001 | $500,000 | $325,000 | -$175K | Matches actual — deals moved out |
-| Feb 2024 | REV-001 | $500,000 | $700,000 | +$200K | Recovery: Acme $120K + TechStart $80K |
-| Mar 2024 | REV-001 | $500,000 | $500,000 | — | Unchanged |
+| Feb 2024 | REV-001 | $520,000 | $720,000 | +$200K | Recovery: Acme $120K + TechStart $80K |
+| Mar 2024 | REV-001 | $540,000 | $540,000 | — | Unchanged |
 | Jan 2024 | OPEX-001 | $120,000 | $145,000 | +$25K | Matches actual |
-| Feb 2024 | OPEX-001 | $120,000 | $128,500 | +$8.5K | New hire run-rate, no repeat PO |
-| Mar 2024 | OPEX-001 | $120,000 | $128,500 | +$8.5K | New hire run-rate continues |
+| Feb 2024 | OPEX-001 | $125,000 | $133,500 | +$8.5K | New hire run-rate, no repeat PO |
+| Mar 2024 | OPEX-001 | $130,000 | $138,500 | +$8.5K | New hire run-rate continues |
 
 ```
 What is the net Q1 impact on revenue and OpEx from these adjustments?
@@ -111,7 +112,7 @@ Write one cell at a time using the FPA_Write_Forecast process and confirm each w
 Watch for the confirmation after each cell:
 ```
 ✅ Written: REV-001 / DEPT-NA-SALES / FC-Q1 / 2024-01 / V3 = 325,000
-✅ Written: REV-001 / DEPT-NA-SALES / FC-Q1 / 2024-02 / V3 = 700,000
+✅ Written: REV-001 / DEPT-NA-SALES / FC-Q1 / 2024-02 / V3 = 720,000
 ...
 ```
 
@@ -120,9 +121,11 @@ Watch for the confirmation after each cell:
 ## Exercise 5 — Verify
 
 ```
-Show me V1 (Actual), V2 (Budget), and V3 (Reforecast) side by side for 
-NA Sales REV-001 and OPEX-001 across January, February, and March 2024 
-in FPA_Variance on smartco. Use scenario FC-Q1.
+For NA Sales REV-001 and OPEX-001, January through March 2024, show:
+- Actual (scenario Actual, version V1)
+- Budget (scenario Budget, version V2)
+- Reforecast (scenario FC-Q1, version V3)
+side by side in FPA_Variance on smartco.
 ```
 
 Expected: V3 values match exactly what was calculated in Exercise 3.
@@ -143,5 +146,17 @@ Summarise the Q1 reforecast in one paragraph suitable for a CFO update.
 
 ---
 
-**→ [Lab 2 — FP&A Variance Autopilot](../lab-02-fpa-variance-autopilot/README.md)** *(if you want to go further with watsonx Orchestrate)*  
+---
+
+## Two Versions of Lab 3
+
+This file is the **Bob-only track** — everything runs in Bob with no external tools.
+
+There is also an **Orchestrate track** (3.0–3.3) that uses watsonx Orchestrate agents. Start there if you completed Lab 2:
+
+**→ [Lab 3.0 — The Replan Scenario (Orchestrate track)](./lab-03-0-scenario/README.md)**
+
+---
+
+**→ [Lab 2 — FP&A Variance Autopilot](../lab-02-fpa-variance-autopilot/README.md)** *(if you want to go further with watsonx Orchestrate)*
 **→ [Session 3 — Your Scenario](../session-03-your-scenario/README.md)**

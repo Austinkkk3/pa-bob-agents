@@ -81,6 +81,7 @@ The Forecast Writer Agent needs **two** MCP connections: one to read cube data, 
 | `get_cube_dimensions` | Cube MCP | Verify cube structure before writing |
 | `execute_mdx_and_get_view` | Cube MCP | Read V3 values back to confirm writes succeeded |
 | `execute_tm1_processes_asynchronously` | **Server MCP** | Write forecast values via `FPA_Write_Forecast` TI process |
+| `get_tm1_server_process_execution_error_logs` | **Server MCP** | Read TI error log if write succeeds but readback shows 0 |
 
 Click **Add to agent**.
 

@@ -70,7 +70,11 @@ and generate a full variance report.
 Watch the **Trace** panel — you should see:
 1. `pa_data_agent` → returns full variance report with root causes
 
-**Expected output:** Report with 2 material variances (🔴 NA Sales Revenue, 🟡 NA Sales OpEx), each with root cause text from the cube and recommended actions.
+**Expected output:** Report with 4 material variances:
+- 🔴 HIGH — NA Sales REV-001: -$175K (-35%), root cause from cube
+- 🔴 HIGH — NA Sales OPEX-001: +$25K (+20.8%), root cause from cube
+- 🟡 MEDIUM — IT OPEX-007: +$14K (+18.7%), root cause from cube
+- ✅ FAVORABLE — NA Sales OPEX-004: -$17.5K (-35%)
 
 ---
 
@@ -78,8 +82,8 @@ Watch the **Trace** panel — you should see:
 
 | Prompt | Expected |
 |--------|----------|
-| `Run variance analysis for March 2024 on FPA_Variance on smartco. Focus on APAC Sales.` | -$85K APAC revenue, root cause from cube |
-| `Run variance analysis for March 2025 on FPA_Variance on smartco. Focus on Product Engineering.` | +$45K Prod Eng OpEx, root cause from cube |
+| `Run variance analysis for March 2024 on FPA_Variance on smartco. Focus on APAC Sales.` | 🔴 APAC REV-001 -$85K (-30.4%), root cause: "Major deal pushed to Q2 due to regulatory approval delays in China ($90K)." |
+| `Run variance analysis for March 2024 on FPA_Variance on smartco. Focus on Finance department.` | 🔴 Finance OPEX-008 +$13K (+37.1%), root cause: "Unplanned audit fees for SOX compliance review." |
 | `List all cubes on smartco.` | Delegates to PA Data Agent, no variance analysis triggered |
 
 ---
@@ -90,7 +94,7 @@ Watch the **Trace** panel — you should see:
 |---------|-----|
 | Orchestrator calls tools directly instead of PA Data Agent | Remove any direct tools from the orchestrator — only sub-agents under the Agents tab |
 | Sub-agent not available in collaborator picker | Confirm PA Data Agent is **Active** in the same tenant/project |
-| Report generated but no root cause text | The variance_explanation field may be empty for that period — expected for non-flagged rows |
+| Report generated but no root cause text | RootCause text is stored only for flagged rows (variance_flag=1 in CSV). Non-flagged rows return empty — this is expected. |
 | "Cube not found" in PA Data Agent | Confirm cube name is `FPA_Variance` and server is `smartco` |
 
 ---

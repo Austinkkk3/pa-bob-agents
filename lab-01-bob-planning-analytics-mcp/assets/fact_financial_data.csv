@@ -20,7 +20,7 @@ time_id,account_id,dept_id,scenario_id,version_id,amount,variance_flag,variance_
 2024-01,COGS-002,DEPT-PROF-SVC,Budget,V2,50000,0,,Budget System
 2024-01,COGS-002,DEPT-PROF-SVC,Actual,V1,53000,0,,ERP Actuals
 2024-01,OPEX-001,DEPT-NA-SALES,Budget,V2,120000,0,,Budget System
-2024-01,OPEX-001,DEPT-NA-SALES,Actual,V1,145000,1,Unplanned trade show participation ($18K) and additional headcount hired in December.,ERP Actuals
+2024-01,OPEX-001,DEPT-NA-SALES,Actual,V1,145000,1,"Unplanned trade show PO ($18K, one-time) and a new Enterprise AE hired in December ($8.5K/month, recurring).",ERP Actuals
 2024-01,OPEX-001,DEPT-EMEA-SALES,Budget,V2,95000,0,,Budget System
 2024-01,OPEX-001,DEPT-EMEA-SALES,Actual,V1,98000,0,,ERP Actuals
 2024-01,OPEX-004,DEPT-NA-SALES,Budget,V2,50000,0,,Budget System
@@ -273,13 +273,8 @@ time_id,account_id,dept_id,scenario_id,version_id,amount,variance_flag,variance_
 2026-03,COGS-001,DEPT-NA-SALES,Budget,V2,150000,0,,Budget System
 2026-03,COGS-001,DEPT-NA-SALES,Actual,V1,156000,0,,ERP Actuals
 2026-03,COGS-001,DEPT-NA-SALES,PY-ACT,V1,145000,0,,ERP Actuals
-2026-01,REV-001,DEPT-NA-SALES,FC-Q2,V4,490000,0,Q2 forecast - adjusted after Q1 actuals (locked),FC System
-2026-01,REV-001,DEPT-EMEA-SALES,FC-Q2,V4,500000,0,Q2 forecast - adjusted after Q1 actuals,FC System
-2026-01,REV-001,DEPT-APAC-SALES,FC-Q2,V4,330000,0,Q2 forecast - adjusted after Q1 actuals,FC System
-2026-01,COGS-001,DEPT-NA-SALES,FC-Q2,V4,162000,0,,FC System
 2026-02,REV-001,DEPT-EMEA-SALES,FC-Q2,V4,500000,0,,FC System
 2026-02,REV-001,DEPT-APAC-SALES,FC-Q2,V4,330000,0,,FC System
-2026-03,REV-001,DEPT-APAC-SALES,FC-Q2,V4,310000,0,Q2 forecast - adjusted after Q1 actuals,FC System
 2026-04,REV-001,DEPT-APAC-SALES,FC-Q2,V4,453000,1,"WHAT-IF: APAC 60% slippage recovery. March lost $105K, recovering 60% = $63K in Q2. Base $390K + $63K = $453K total.",What-If Model
 2026-04,REV-001,DEPT-APAC-SALES,FC-Q1,V4,390000,0,Base FC-Q1 before APAC what-if applied,FC System
 2026-04,COGS-001,DEPT-NA-SALES,FC-Q2,V4,185000,1,"WHAT-IF: Raw material +8% price increase. Base $171K * 1.08 = $185K. Incremental $14K COGS. Gross margin impact: -1.8%.",What-If Model
