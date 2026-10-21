@@ -3,7 +3,7 @@
 import csv, sys
 from pathlib import Path
 
-assets = Path("pa-bob-agents/lab-01-bob-planning-analytics-mcp/assets")
+assets = Path(__file__).parent / "lab-01-bob-planning-analytics-mcp/assets"
 
 def load_ids(filename, id_col):
     p = assets / filename
