@@ -31,9 +31,11 @@ Expected variances:
 
 | Department | Account | Variance | Flag |
 |-----------|---------|----------|------|
-| DEPT-NA-SALES | REV-001 | -$175K (-35%) | 🔴 |
-| DEPT-NA-SALES | OPEX-001 | +$25K (+20.8%) | 🟡 |
-| DEPT-EMEA-SALES | REV-001 | +$40K (+10.5%) | ✅ |
+| DEPT-NA-SALES | REV-001 | -$175K (-35.0%) | 🔴 unfavorable |
+| DEPT-NA-SALES | OPEX-001 | +$25K (+20.8%) | 🔴 unfavorable (expense over budget) |
+| DEPT-NA-SALES | OPEX-004 | -$17.5K (-35.0%) | ✅ favorable (expense under budget) |
+
+Nothing else crosses the threshold in January 2024 — for example EMEA REV-001 is +$40K (+10.5%) and should **not** be flagged. (Lab 2.2 uses separate revenue/expense thresholds, so it also reports IT OPEX-007 +18.7%.)
 
 > If the cube is missing, ask your facilitator or re-run Lab 1 Exercise 5 (~8 min).
 
