@@ -15,13 +15,13 @@ This agent has one job: **turn analysis into action.**
 
 ## Step 1 — Create the Agent
 
-**Orchestrate UI:** Build → All agents → Create agent
+**Orchestrate UI:** ☰ → **Active inventory** → **Agents** → **Create agent** → **Create from scratch**
 
 | Field | Value |
 |-------|-------|
 | **Name** | `Forecast Writer Agent` |
 | **Description** | Receives variance and root cause context from the orchestrator. Calculates adjusted forecast values based on variance classification (timing shift vs structural run-rate). Writes V3 forecast values back to the FPA_Variance cube in Planning Analytics via MCP. Does not analyse variances or query CRM/ERP directly. |
-| **Model** | `granite-4-h-small` |
+| **Model** | `GPT-OSS 120B — OpenAI (via Groq)` (the default — keep it; `granite-4-h-small` is not available on TechZone trial tenants) |
 
 **ADK:** `orchestrate agents import --file ./forecast-writer-agent.yaml`
 
@@ -29,7 +29,7 @@ This agent has one job: **turn analysis into action.**
 
 ## Step 2 — Import Agent Instructions
 
-**Instructions** tab → **Import from YAML** → open [`forecast-writer-agent.yaml`](forecast-writer-agent.yaml) → paste → **Apply**
+Open [`forecast-writer-agent.yaml`](forecast-writer-agent.yaml), copy **everything under `instructions:`**, and paste it into **Behavior** tab → **Instructions**.
 
 ---
 

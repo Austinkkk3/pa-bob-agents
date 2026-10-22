@@ -23,17 +23,16 @@ In Orchestrate **Agents** list, confirm **Active** status for:
 
 ## Step 2 — Open the Existing Orchestrator
 
-1. Build → All agents → click `FP&A Variance Autopilot`
+1. ☰ → **Active inventory** → **Agents** → click `FP&A Variance Autopilot`
 2. Go to the **Agents** tab
-3. Click **Add agent** → select `Forecast Writer Agent`
-4. **Save**
+3. Click **Add agents** → **Local instance** → tick `Forecast Writer Agent` → **Add to agent**
 
 ---
 
 ## Step 3 — Update the Orchestrator Instructions
 
-1. Go to the **Instructions** tab
-2. Click **Import from YAML** → open [`fpa-replan-orchestrator.yaml`](fpa-replan-orchestrator.yaml) → paste → **Apply**
+1. Open [`fpa-replan-orchestrator.yaml`](fpa-replan-orchestrator.yaml) and copy **everything under `instructions:`**
+2. **Behavior** tab → **Instructions** → select all, replace with the copied text, click outside the box to save
 
 This replaces the Lab 2 instructions with the upgraded version that includes the replan step.
 

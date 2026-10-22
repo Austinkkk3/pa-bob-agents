@@ -7,7 +7,10 @@
 
 ## Goal
 
-Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_Variance` in Planning Analytics via MCP, calculates variances, reads the embedded root cause explanations from the cube, and returns a complete CFO-ready report. No CRM or ERP systems needed.
+Build the **PA Data Agent** — the only sub-agent in this lab. It runs a fixed MDX query against `FPA_Variance` via MCP, reads the embedded root cause explanations from the cube, and returns a complete CFO-ready report. No CRM or ERP systems needed.
+
+> 💡 **Design principle — PA does the math, the LLM writes the story.**
+> Variance $, variance %, the materiality test and the HIGH / MEDIUM / FAVORABLE flag are all MDX calculated members, so every number is deterministic and auditable. The agent only copies the flagged rows and adds a classification and a recommended action. In testing, letting the LLM compute or classify variances itself gave different answers on every run.
 
 ---
 
@@ -18,34 +21,47 @@ Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_
 > 📋 **FPA_Variance data convention:**
 > `V1` = Actual · `V2` = Budget · `V3` = Reforecast
 > `Scenario = "Actual"` stores actuals · `Scenario = "Budget"` stores budget
-> MDX queries must use CROSSJOIN on both Version and Scenario to retrieve both in one call — filtering only by V1 in the WHERE clause returns zero for Budget rows.
+> Actual = (`Actual`, `V1`) and Budget = (`Budget`, `V2`). The agent's MDX already reads each one from the right Scenario/Version pair — you do not need to write MDX in this lab.
 
 ---
 
 ## Step 1 — Create the Agent
 
-**Orchestrate UI:** Build → All agents → Create agent
+**Orchestrate UI:** ☰ → **Active inventory** → **Agents** → **Create agent** → **Create from scratch**
+
+> Clicking **Create from scratch** immediately creates *Untitled Agent 1* — there is no separate Create button. Name and description save when you leave the field. Select all the text in the name box before typing, or the new name is appended to the old one.
 
 | Field | Value |
 |-------|-------|
 | **Name** | `PA Data Agent` (prefix with your initials on a shared tenant) |
 | **Description** | Queries the FPA_Variance cube in Planning Analytics via MCP. Returns budget vs actual data with material variance flags. Does not call CRM or ERP systems. |
-| **Model** | `granite-4-h-small` |
+| **Model** | `GPT-OSS 120B — OpenAI (via Groq)` (the default — keep it) |
+
+> TechZone trial tenants offer only GPT-OSS 120B (Groq), GPT-OSS 120B (AWS Bedrock) and watsonx Orchestrate Frontier — `granite-4-h-small` is not available. The model dropdown is disabled unless an admin turns on **Profile → Settings → Models → Model selection**. Lab 2.2 and 2.5 were validated on the Groq default. The first time you use the model, a third-party license Legal Notice appears on the agent page.
+
+![Create agent dialog — Create from scratch](../assets/screenshots/lab2-2-01-create-from-scratch.jpg)
+
+![Agent profile with name, model and description](../assets/screenshots/lab2-2-02-agent-profile.jpg)
 
 **ADK:** `orchestrate agents import --file ./pa-data-agent.yaml`
 
 ---
 
-## Step 2 — Import Agent Instructions
+## Step 2 — Paste the Agent Instructions
 
-1. **Instructions** tab → **Import from YAML**
-2. Open [`pa-data-agent.yaml`](pa-data-agent.yaml) → paste → **Apply**
+1. Open [`pa-data-agent.yaml`](pa-data-agent.yaml) and copy **everything under `instructions: |`** (Persona → Response format).
+2. Agent page → **Behavior** tab → **Instructions** → paste. Click outside the box to save.
+
+> ⚠️ Paste the instructions **exactly** — especially the two MDX blocks. The MCP tool `execute_mdx_and_get_view` fails ("Failed to encode cube view") or silently mislabels rows for many MDX shapes (NON EMPTY crossjoins, filtered crossjoins, tuple sets on columns, empty results). The query in the YAML is the shape that was tested to work.
 
 ---
 
 ## Step 3 — Add the Remote MCP Server
 
-1. Toolset section → **Add tool** → **MCP server** → **Add MCP server** → **Remote MCP server**
+1. Agent page → **Tools** tab → **Add tool** → **MCP server** → **Add MCP server** → **Remote MCP server** → **Next**
+
+   ![Add a tool dialog — MCP server](../assets/screenshots/lab2-2-03-add-tool-mcp-server.jpg)
+
 2. Fill in:
 
 | Field | Value |
@@ -57,24 +73,31 @@ Build the **PA Data Agent** — the only sub-agent in this lab. It queries `FPA_
 
 3. **Connect** — you should see: *"MCP server is ready and tools are available."*
 
+> Connect takes 30–80 seconds ("This may take several minutes"). If the spinner stops with no message, do **not** click Connect again — close the dialog and reopen **Add tool → MCP server**; the server and its tools are already there.
+
 ---
 
-## Step 4 — Select the 5 PA Tools
+## Step 4 — Select the 6 PA Tools
+
+Use the filter to show only `planning-analytics-mcp`, then tick:
 
 | Tool | Purpose |
 |------|---------|
 | `get_available_tm1_servers` | Confirm smartco is reachable |
+| `get_tm1_cubes` | List the cubes on a server ("List all cubes on smartco") |
 | `get_cube_dimensions` | Confirm FPA_Variance dimension names |
 | `get_cube_sample_members` | Retrieve valid member IDs |
-| `execute_mdx_and_get_view` | Query budget vs actual data |
-| `lookup_potential_members` | Resolve member names if needed |
+| `execute_mdx_and_get_view` | Run the variance and totals MDX |
+| `lookup_potential_members` | Resolve member names if a period or ID is not found |
 
-Click **Add to agent**.
+![Selecting PA MCP tools (tools are named <server>:<tool>)](../assets/screenshots/lab2-2-04-select-mcp-tools.jpg)
+
+Click **Add to agent**. The Tools tab should list 6 tools.
 
 ---
 
-> 📍 **Use Build → Preview to test, not the Chat page.**
-> The Chat page only shows agents that have been published to Live. Find your agent under **Build → All agents**, open it, and use the **Preview** panel on the right to test — no publish step needed.
+> 📍 **Use the Preview panel to test, not the Chat page.**
+> The Chat page only shows agents that have been published to Live. Find your agent under **Active inventory → Agents**, open it, and use the **Preview** panel on the right to test — no publish step needed.
 
 ## Step 5 — Test the Agent
 
@@ -84,16 +107,33 @@ List available TM1 servers and show the dimensions of the FPA_Variance cube.
 ```
 Expected: `smartco` server, 6 dimensions.
 
+![Test 5.1 — TM1 servers and FPA_Variance dimensions](../assets/screenshots/lab2-2-05-test51-servers.jpg)
+
 **Test 5.2 — Full variance report:**
 ```
 Show me the FP&A variance report for January 2024 on the FPA_Variance cube on smartco.
 Flag material variances and include root cause explanations.
 ```
-Expected: 4 material variances using agent thresholds (Revenue >25% or >$150K; Expense >20% or >$75K):
-- 🔴 HIGH — NA Sales REV-001: -$175K (-35%), root cause text from cube
-- 🔴 HIGH — NA Sales OPEX-001: +$25K (+20.8%), root cause text from cube
-- 🟡 MEDIUM — IT OPEX-007: +$14K (+18.7%), root cause text from cube
-- ✅ FAVORABLE — NA Sales OPEX-004: -$17.5K (-35%)
+The agent calls `execute_mdx_and_get_view` twice (variances, then company totals). Expected: **4 material variances** (material = Revenue > $100K or > 20%, Expense > $50K or > 15%; HIGH = Revenue > $150K or > 25%, Expense > $75K or > 20%):
+
+| Flag | Department | Account | Budget | Actual | Variance | % |
+|------|-----------|---------|-------:|-------:|---------:|--:|
+| 🔴 HIGH | DEPT-NA-SALES | REV-001 | $500,000 | $325,000 | -$175,000 | -35.00% |
+| 🔴 HIGH | DEPT-NA-SALES | OPEX-001 | $120,000 | $145,000 | +$25,000 | +20.83% |
+| 🟡 MEDIUM | DEPT-IT | OPEX-007 | $75,000 | $89,000 | +$14,000 | +18.67% |
+| ✅ FAVORABLE | DEPT-NA-SALES | OPEX-004 | $50,000 | $32,500 | -$17,500 | -35.00% |
+
+Each row carries its root cause text from the cube. SUMMARY (company totals): TOTAL-REV -$147,000 (-7.44%), TOTAL-COGS +$10,000 (+8.00%), TOTAL-OPEX +$58,500 (+4.68%).
+
+![Test 5.2 — variance report, HIGH rows](../assets/screenshots/lab2-2-06-test52-report.jpg)
+
+![Test 5.2 — remaining rows and company totals](../assets/screenshots/lab2-2-07-test52-summary.jpg)
+
+**Test 5.3 — One department:**
+```
+Any material variances for APAC Sales in March 2024?
+```
+Expected: only 🔴 HIGH — DEPT-APAC-SALES REV-001: -$85,000 (-30.36%), root cause: "Major deal pushed to Q2 due to regulatory approval delays in China ($90K)." No rows from other departments.
 
 ---
 
@@ -104,7 +144,10 @@ Expected: 4 material variances using agent thresholds (Revenue >25% or >$150K; E
 | "Connect" fails | Verify team credential is in **Live** environment; check URL has no trailing slash |
 | Tool list empty after connect | Ask facilitator to verify MCP endpoint is enabled on TechZone instance |
 | 401 in Preview | Confirm team credential shows ✅ in Live environment |
-| "Cube not found" | Send `List available cubes on smartco` to check cube name |
+| "Cube not found" | Send `List all cubes on smartco` to check the cube name (needs `get_tm1_cubes`) |
+| Agent says it cannot list cubes | `get_tm1_cubes` was not selected in Step 4 — add it |
+| "Failed to encode cube view to markdown/HTML" | The MDX was changed. Re-paste the instructions exactly. If the MDX is exact, the period simply has no material variances |
+| Numbers differ from Expected, or rows are attributed to the wrong department | The agent wrote its own MDX. Re-paste the instructions; do not add NON EMPTY or change the row sets |
 | Root cause shows empty | Expected for non-flagged rows — RootCause text is stored only where variance_flag=1 in the CSV |
 
 ---

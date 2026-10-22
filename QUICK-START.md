@@ -64,10 +64,10 @@ Prefix all your agent names with your initials — `JD_pa_data_agent` not `pa_da
 `Scenario "Budget"` + `Version V2` = budget values
 
 **Imported agents have no tools yet:**  
-ADK `agents import` creates the agent shell only. Add MCP tools in **Build → agent → Toolset** in the Orchestrate UI.
+ADK `agents import` creates the agent shell only. Add MCP tools in the agent's **Tools** tab → **Add tool → MCP server** in the Orchestrate UI.
 
 **Testing agents:**  
-Use **Build → All agents → Preview panel** — not the Chat page. Chat only shows published (Live) agents.
+Use **Active inventory → Agents → (your agent) → Preview panel** — not the Chat page. Chat only shows published (Live) agents.
 
 ---
 
