@@ -22,10 +22,15 @@ Show me the dimensions of the FPA_Variance cube.
 
 Expected: `FPA_Account · FPA_Department · FPA_Scenario · FPA_Time · FPA_Version · FPA_Measures`
 
+![FPA_Variance dimensions in Bob](../assets/screenshots/lab2-0-01-cube-dimensions.jpg)
+
 ```
-Show me January 2024 actual vs budget for all departments in FPA_Variance on smartco.
+Show me January 2024 actual vs budget by department and account in FPA_Variance on smartco
+(Actual = scenario Actual, version V1; Budget = scenario Budget, version V2).
 Flag any variance greater than $100,000 or 20%.
 ```
+
+> Keep the version hint in the prompt. Without it, Bob read Budget from version V1 in testing, got zeros, and reported actual amounts as variances.
 
 Expected variances:
 
@@ -35,7 +40,9 @@ Expected variances:
 | DEPT-NA-SALES | OPEX-001 | +$25K (+20.8%) | 🔴 unfavorable (expense over budget) |
 | DEPT-NA-SALES | OPEX-004 | -$17.5K (-35.0%) | ✅ favorable (expense under budget) |
 
-Nothing else crosses the threshold in January 2024 — for example EMEA REV-001 is +$40K (+10.5%) and should **not** be flagged. (Lab 2.2 uses separate revenue/expense thresholds, so it also reports IT OPEX-007 +18.7%.)
+Bob also lists roll-up rows that cross the threshold (TOTAL-COMPANY, BU-PROD and NA's TOTAL-REV). At leaf level, nothing else crosses the threshold in January 2024 — for example EMEA REV-001 is +$40K (+10.5%) and should **not** be flagged. (Lab 2.2 uses separate revenue/expense thresholds, so it also reports IT OPEX-007 +18.7%.)
+
+![Flagged variances for January 2024](../assets/screenshots/lab2-0-02-variance-flags.jpg)
 
 > If the cube is missing, ask your facilitator or re-run Lab 1 Exercise 5 (~8 min).
 
