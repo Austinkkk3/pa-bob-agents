@@ -64,7 +64,7 @@ In Bob (Planning Analytics mode):
 "Show me the TI processes on smartco that start with FPA"
 ```
 
-Expected: `FPA_Build_Dimensions`, `FPA_Create_Account_Dim`, `FPA_Load_Facts`, `FPA_Write_Forecast`
+Expected: `FPA_Build_Dimensions`, `FPA_Build_Time`, `FPA_Load_Facts`, `FPA_Write_Forecast`, `FPA_Reset_Forecast`
 
 If `FPA_Write_Forecast` is missing, see [`lab-03-forecast-replan-autopilot/FACILITATOR-SETUP.md`](lab-03-forecast-replan-autopilot/FACILITATOR-SETUP.md).
 

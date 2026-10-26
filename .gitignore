@@ -22,3 +22,6 @@ Thumbs.db
 
 # ── Backup folder ────────────────────────────────────────────────────────────
 Backup/
+
+# macOS zip artifacts
+__MACOSX/

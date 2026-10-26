@@ -12,7 +12,8 @@
 |-|-----|-------------|
 | 🛠 | [Lab 0 — Setup](./lab-00-setup/README.md) | Install PA mode & skill, configure MCP — all via Bob |
 | 📊 | [Lab 1 — Bob + PA via MCP](./lab-01-bob-planning-analytics-mcp/README.md) | Query TM1 cubes, run variance analysis, build a model from CSV |
-| 🤖 | [Lab 2 — FP&A Variance Autopilot](./lab-02-fpa-variance-autopilot/README.md) | Multi-agent system: detect variances, investigate CRM/ERP root causes, generate CFO report |
+| 🤖 | [Lab 2 — FP&A Variance Autopilot](./lab-02-fpa-variance-autopilot/README.md) | Build agents in watsonx Orchestrate that detect material variances in PA, read the root causes stored in the cube and write a CFO-ready report |
+| ✍️ | [Lab 3 — Forecast Replan with Bob](./lab-03-forecast-replan-autopilot/README.md) *(optional)* | Use Bob to calculate an adjusted Q1 forecast and write it back to PA |
 | 💡 | [Session 3 — Your Scenario](./session-03-your-scenario/README.md) | Adapt the autopilot pattern to your own use case |
 
 ---
@@ -53,8 +54,10 @@ pa-bob-agents/
 ├── lab-01-bob-planning-analytics-mcp/    ← Lab 1: Bob + PA via MCP
 │   └── assets/                           ← CSV files for Exercise 5
 ├── lab-02-fpa-variance-autopilot/        ← Lab 2: FP&A Variance Autopilot
-│   ├── assets/                           ← Agent YAMLs + SalesLens API
-│   └── lab-02-0 through lab-02-8/        ← Sub-labs
+│   ├── assets/                           ← Screenshots, ADK sample agent, SalesLens API (optional labs)
+│   └── lab-02-0 through lab-02-8/        ← Sub-labs (core path: 2.0, 2.1, 2.2, 2.5)
+├── lab-03-forecast-replan-autopilot/     ← Lab 3 (optional): forecast write-back with Bob
+├── planning-analytics-skill/             ← Bob skill installed in Lab 0
 └── session-03-your-scenario/             ← Adapt to your use case
 ```
 
