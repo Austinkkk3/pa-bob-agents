@@ -186,17 +186,4 @@ and confirm they are all 0.
 
 ---
 
----
-
-## Two Versions of Lab 3
-
-This file is the **Bob-only track** — everything runs in Bob with no external tools.
-
-There is also an **Orchestrate track** (3.0–3.3) that uses watsonx Orchestrate agents. Start there if you completed Lab 2:
-
-**→ [Lab 3.0 — The Replan Scenario (Orchestrate track)](./lab-03-0-scenario/README.md)**
-
----
-
-**→ [Lab 2 — FP&A Variance Autopilot](../lab-02-fpa-variance-autopilot/README.md)** *(if you want to go further with watsonx Orchestrate)*
 **→ [Session 3 — Your Scenario](../session-03-your-scenario/README.md)**

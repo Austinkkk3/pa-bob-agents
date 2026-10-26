@@ -7,7 +7,7 @@
 
 ## What This Setup Does
 
-Creates the `FPA_Write_Forecast` TI process on `smartco` so the Forecast Writer Agent can write V3 forecast values back into the `FPA_Variance` cube.
+Creates the `FPA_Write_Forecast` TI process on `smartco` so participants can use Bob to write V3 forecast values back into the `FPA_Variance` cube.
 
 > **Good news — nothing else is needed:**
 > - `V3` already exists in the `FPA_Version` dimension ✅
@@ -94,7 +94,7 @@ Run the FPA_Reset_Forecast process on smartco to clear the FC-Q1 / V3 reforecast
 then read back FC-Q1 / V3 for NA Sales REV-001 and OPEX-001, 2024-01 to 2024-03, and confirm they are all 0.
 ```
 
-> Tested on October 26, 2026: all 6 cells written in Lab 3 were cleared. `FPA_Reset_Forecast` only clears 2024-01 to 2024-03. Values written to other months (for example April by the Lab 3.3 APAC example) are not cleared.
+> Tested on October 26, 2026: all 6 cells written in Lab 3 were cleared. `FPA_Reset_Forecast` only clears 2024-01 to 2024-03. Values written to other months are not cleared.
 
 Or run this MDX to check what V3 values exist before clearing:
 
@@ -111,9 +111,7 @@ Show me all non-zero V3 values in FPA_Variance on smartco for scenario FC-Q1.
 | `.../v0/agentic-ai/cube/mcp` | cube read/query tools (`execute_mdx_and_get_view`, etc.) |
 | `.../v0/agentic-ai/analysis/mcp` | server tools including `execute_tm1_processes_asynchronously`, `get_tm1_server_process_execution_error_logs` |
 
-> The Forecast Writer Agent in Lab 3.1 must connect to the **analysis MCP endpoint** (`/agentic-ai/analysis/mcp`), not the cube endpoint, to access `execute_tm1_processes_asynchronously`.
-
 ---
 
-*Lab 3 — Forecast Replan Autopilot · Facilitator Setup*  
+*Lab 3 — Forecast Replan with Bob · Facilitator Setup*  
 *Made with IBM Bob — Planning Analytics × watsonx Orchestrate Workshop*

@@ -49,7 +49,7 @@ Expected: 6 dimensions — FPA_Account, FPA_Department, FPA_Scenario, FPA_Time, 
 | [Lab 0](lab-00-setup/README.md) | MCP config, skill, mode | Bob settings |
 | [Lab 1](lab-01-bob-planning-analytics-mcp/README.md) | Query, analyse, build TM1 model | Bob + PA MCP |
 | [Lab 2](lab-02-fpa-variance-autopilot/README.md) | Multi-agent variance autopilot | watsonx Orchestrate |
-| [Lab 3](lab-03-forecast-replan-autopilot/README.md) | Forecast write-back to PA | Bob + Orchestrate |
+| [Lab 3](lab-03-forecast-replan-autopilot/README.md) | Forecast write-back to PA | Bob |
 
 ---
 
@@ -80,7 +80,6 @@ echo "<API_KEY>" | orchestrate env activate <env-name>
 # Import agents
 orchestrate agents import --file ./pa-data-agent.yaml
 orchestrate agents import --file ./fpa-orchestrator-agent.yaml
-orchestrate agents import --file ./forecast-writer-agent.yaml
 
 # List agents
 orchestrate agents list
