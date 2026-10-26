@@ -87,12 +87,14 @@ Expected (before Lab 3 runs):
 
 ## Reset Between Workshop Runs
 
-To clear V3 values before a fresh workshop run:
+To clear V3 values before a fresh workshop run, ask Bob (Planning Analytics mode):
 
 ```
-On smartco, clear all V3 data in FPA_Variance for scenario FC-Q1 
-across all accounts, departments, and time periods.
+Run the FPA_Reset_Forecast process on smartco to clear the FC-Q1 / V3 reforecast,
+then read back FC-Q1 / V3 for NA Sales REV-001 and OPEX-001, 2024-01 to 2024-03, and confirm they are all 0.
 ```
+
+> Tested on October 26, 2026: all 6 cells written in Lab 3 were cleared. `FPA_Reset_Forecast` only clears 2024-01 to 2024-03. Values written to other months (for example April by the Lab 3.3 APAC example) are not cleared.
 
 Or run this MDX to check what V3 values exist before clearing:
 
