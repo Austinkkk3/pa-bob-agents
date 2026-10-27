@@ -114,5 +114,5 @@ Summary: revenue -$147,000 (-7.44%), OpEx +$58,500 (+4.68%). The orchestrator ma
 ---
 
 **→ [Lab 3 — Forecast Replan with Bob](../../lab-03-forecast-replan-autopilot/README.md)** *(optional: write a new forecast back to PA)*  
-**→ [Lab 2.6 — AgentOps](../lab-02-6-agentops/README.md)** *(optional)*  
+**→ [Lab 2.7 — Embed the Autopilot in a web page](../lab-02-7-chat-embed/README.md)** *(optional)*  
 **→ [Session 3 — Your Scenario](../../session-03-your-scenario/README.md)**

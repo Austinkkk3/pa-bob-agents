@@ -130,7 +130,7 @@ instructions: >
   You are a test agent created for the watsonx Orchestrate ADK tutorial.
   When the user asks "who are you", respond with: I'm the Hello World Agent.
   Congratulations on completing the Getting Started with watsonx Orchestrate ADK tutorial!
-llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+llm: groq/openai/gpt-oss-120b
 style: default
 collaborators: []
 tools: []
@@ -185,7 +185,7 @@ Generate a ready-to-import agent YAML for a Planning Analytics use case with the
 
 - Name: PA_Variance_Agent
 - Purpose: Query the FPA_Variance TM1 cube for budget vs actual variances and return a plain-language summary
-- LLM: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+- LLM: groq/openai/gpt-oss-120b
 - Style: default
 - No collaborators or tools yet (I'll add MCP tools after import)
 
@@ -208,7 +208,7 @@ Now that your environment is set up and your first agent is running, here are wa
 | What to explore | How |
 |----------------|-----|
 | See all ADK commands | `orchestrate --help` |
-| Import the FP&A agent from this workshop | `orchestrate agents import -f lab-02-fpa-variance-autopilot/assets/fpa-variance-agent.yaml` |
+| Import the PA Data Agent from this workshop | `orchestrate agents import -f lab-02-fpa-variance-autopilot/lab-02-2-pa-agent/pa-data-agent.yaml` (then add the MCP tools in the UI, Lab 2.2 Step 3–4) |
 | Add tools to an agent | Define tools in YAML and use `orchestrate tools import` |
 | Read the full ADK docs | [IBM Developer — ADK Tutorial](https://developer.ibm.com/learningpaths/get-started-watsonx-orchestrate/develop-agents-adk/) |
 | Join the community | [watsonx Orchestrate Community](https://community.ibm.com/community/user/watsonxai/communities/community-home?CommunityKey=1b4d3e0f-d8d1-4f47-be87-d803e15e8b0e) |

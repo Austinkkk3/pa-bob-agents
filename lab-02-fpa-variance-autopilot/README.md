@@ -38,11 +38,10 @@ FP&A Variance Autopilot (Orchestrator)
 | [2.1](lab-02-1-pa-mcp-connection/README.md) | PA MCP connection in Orchestrate | 10 min |
 | [2.2](lab-02-2-pa-agent/README.md) | PA Data Agent live | 20 min |
 | [2.5](lab-02-5-orchestrator/README.md) | Full Autopilot running end-to-end | 20 min |
-| [2.6](lab-02-6-agentops/README.md) *(optional)* | AgentOps tracing & evaluation | 15 min |
 | [2.7](lab-02-7-chat-embed/README.md) *(optional)* | Embedded chat page | 10 min |
 | [2.8](lab-02-8-adk/README.md) *(bonus)* | Orchestrate ADK CLI | 30 min |
 
-> **Note:** Labs 2.3 (SalesLens connection) and 2.4 (CRM/ERP Agents) are available in this repo for reference but are not part of the core path. Root causes are read directly from the `FPA_Variance` cube.
+> **Note:** Root causes are read directly from the `FPA_Variance` cube — no CRM or ERP system is needed. The earlier CRM/ERP extension (Labs 2.3, 2.4, 2.6) is kept in [`archive/crm-erp-extension`](../archive/crm-erp-extension/README.md) for reference.
 
 **→ [Start with Lab 2.0](lab-02-0-fpa-dataset-catchup/README.md)**
 

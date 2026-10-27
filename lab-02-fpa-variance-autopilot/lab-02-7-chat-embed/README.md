@@ -27,13 +27,11 @@ watsonx Orchestrate provides a JavaScript loader (`wxoLoader.js`) that renders a
 [Browser loads saleslens-wxo-embed.html]
         │
         ▼
-wxoLoader.js  ──→  watsonx Orchestrate (eu-de)
+wxoLoader.js  ──→  watsonx Orchestrate (your region)
   orchestrationID                    │
   agentId                            ▼
         │         FP&A Variance Autopilot (Orchestrator)
-        │               ├── PA Data Agent
-        │               ├── CRM Context Agent
-        │               └── ERP Context Agent
+        │               └── PA Data Agent → Planning Analytics (FPA_Variance)
         │                            │
         └────────── chat UI ─────────┘
 ```
@@ -94,7 +92,7 @@ Analyse APAC Sales — March 2024
 Why did NA Sales miss budget in Jan 2024?
 ```
 
-The orchestrator routes the query across PA, CRM, and ERP agents and returns a CFO-ready explanation.
+The orchestrator delegates to the PA Data Agent and returns a CFO-ready explanation with the root causes stored in the cube.
 
 ---
 

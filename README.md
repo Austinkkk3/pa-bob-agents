@@ -54,11 +54,12 @@ pa-bob-agents/
 ├── lab-01-bob-planning-analytics-mcp/    ← Lab 1: Bob + PA via MCP
 │   └── assets/                           ← CSV files for Exercise 5
 ├── lab-02-fpa-variance-autopilot/        ← Lab 2: FP&A Variance Autopilot
-│   ├── assets/                           ← Screenshots, ADK sample agent, SalesLens API (optional labs)
-│   └── lab-02-0 through lab-02-8/        ← Sub-labs (core path: 2.0, 2.1, 2.2, 2.5)
+│   ├── assets/                           ← Screenshots
+│   └── lab-02-*/                         ← Sub-labs (core path: 2.0, 2.1, 2.2, 2.5; optional: 2.7, 2.8)
 ├── lab-03-forecast-replan-autopilot/     ← Lab 3 (optional): forecast write-back with Bob
 ├── planning-analytics-skill/             ← Bob skill installed in Lab 0
-└── session-03-your-scenario/             ← Adapt to your use case
+├── session-03-your-scenario/             ← Adapt to your use case
+└── archive/                              ← Retired CRM/ERP extension (not part of the workshop)
 ```
 
 ---

@@ -56,7 +56,7 @@ Requirements:
 - Clear name (snake_case) and one-line description
 - Instructions: detect material variances, investigate root cause from external system,
   return a CFO-ready plain-language summary
-- LLM: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+- LLM: groq/openai/gpt-oss-120b
 - style: default, no collaborators or tools yet
 
 Return only the YAML.
