@@ -1,6 +1,6 @@
 # Lab 2 — FP&A Variance Autopilot
 
-**Duration:** 45 minutes (core path: Labs 2.0–2.2, 2.5)
+**Duration:** 50 minutes (core path: Labs 2.0–2.2, 2.5)
 **Tools:** watsonx Orchestrate · IBM Planning Analytics
 **Prerequisite:** [Lab 0](../lab-00-setup/README.md) ✅ · [Lab 1](../lab-01-bob-planning-analytics-mcp/README.md) ✅
 
@@ -36,7 +36,7 @@ FP&A Variance Autopilot (Orchestrator)
 |---------|-------------|------|
 | [2.0](lab-02-0-fpa-dataset-catchup/README.md) | Confirm `FPA_Variance` cube | 5 min |
 | [2.1](lab-02-1-pa-mcp-connection/README.md) | PA MCP connection in Orchestrate | 10 min |
-| [2.2](lab-02-2-pa-agent/README.md) | PA Data Agent live | 20 min |
+| [2.2](lab-02-2-pa-agent/README.md) | PA Data Agent live, then changed with Bob | 25 min |
 | [2.5](lab-02-5-orchestrator/README.md) | Full Autopilot running end-to-end | 20 min |
 | [2.7](lab-02-7-chat-embed/README.md) *(optional)* | Embedded chat page | 10 min |
 | [2.8](lab-02-8-adk/README.md) *(bonus)* | Orchestrate ADK CLI | 30 min |

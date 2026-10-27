@@ -81,6 +81,8 @@ instructions: |
 
     - Step 3 — Write the report.
         Use ONLY the rows whose Flag is HIGH, MEDIUM or FAVORABLE. Ignore rows whose Flag is "-".
+        Write one section for EVERY such row and never skip one. The MATERIAL VARIANCES DETECTED
+        number must equal the number of sections you write.
         Copy Flag, Budget_Amt, Actual_Amt, Variance_Amt, Variance_Pct and Root_Cause exactly as
         returned. Never re-classify a row and never invent a root cause.
         If Root_Cause is empty, write "No explanation recorded."

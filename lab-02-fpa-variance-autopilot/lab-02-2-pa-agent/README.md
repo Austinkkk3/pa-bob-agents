@@ -1,6 +1,6 @@
 # Lab 2.2 — Create the PA Data Agent
 
-**Duration:** ~20 minutes
+**Duration:** ~25 minutes
 **Prerequisite:** [Lab 2.1](../lab-02-1-pa-mcp-connection/README.md) ✅
 
 ---
@@ -137,6 +137,40 @@ Expected: only 🔴 HIGH — DEPT-APAC-SALES REV-001: -$85,000 (-30.36%), root c
 
 ---
 
+## Step 6 — Change the Agent with Bob (~5 minutes)
+
+Bob builds, Orchestrate runs: use Bob to change the agent's rule, then run the changed agent in Orchestrate. Both talk to the same Planning Analytics cube.
+
+1. In Bob, send:
+
+```
+Open lab-02-fpa-variance-autopilot/lab-02-2-pa-agent/pa-data-agent.yaml. In its instructions,
+change the revenue materiality threshold from 20% to 10%: update the Revenue line under Context,
+and the 20 / -20 percentage test in the TOTAL-REV branch of the Is_Material member in VARIANCE_MDX.
+Leave the HIGH thresholds and everything else unchanged, and do not save the file.
+First list the exact lines you changed (before -> after), then show the complete updated text
+under instructions: so I can paste it into watsonx Orchestrate.
+```
+
+   Bob should report exactly two changed lines and say that the HIGH thresholds are untouched.
+
+![Bob lists the two changed lines](../assets/screenshots/lab2-2-08-bob-changes-threshold.jpg)
+
+2. In Orchestrate, open your PA Data Agent → **Behavior** → **Instructions**, select all, paste Bob's updated text, and click outside the box to save.
+3. Reload the page (this starts a fresh Preview chat) and send Test 5.2 again.
+
+Expected: **5** material variances instead of 4. The new row is ✅ FAVORABLE — DEPT-EMEA-SALES REV-001: +$40,000 (+10.53%), root cause "Unexpected enterprise deal closed early (GlobalTech $45K)". The other four rows and the company totals are unchanged.
+
+![Test 5.2 after the change — 5 material variances](../assets/screenshots/lab2-2-09-test52-after-change-top.jpg)
+
+![The new FAVORABLE row for EMEA revenue](../assets/screenshots/lab2-2-10-test52-after-change-emea.jpg)
+
+4. Paste the original instructions back (or re-run the Bob prompt with 10% → 20%) before Lab 2.5, so the expected results there still match.
+
+> Your local copy of the repo must be current for step 1 — Bob reads the file from your workspace. If you cloned the repo before the workshop day, run `git pull` first.
+
+---
+
 ## Troubleshooting
 
 | Symptom | Fix |
@@ -147,6 +181,7 @@ Expected: only 🔴 HIGH — DEPT-APAC-SALES REV-001: -$85,000 (-30.36%), root c
 | "Cube not found" | Send `List all cubes on smartco` to check the cube name (needs `get_tm1_cubes`) |
 | Agent says it cannot list cubes | `get_tm1_cubes` was not selected in Step 4 — add it |
 | "Failed to encode cube view to markdown/HTML" | The MDX was changed. Re-paste the instructions exactly. If the MDX is exact, the period simply has no material variances |
+| A flagged row is missing from the report, or the count does not match the sections | The model skipped a row. Reload the page and ask again; the instructions require one section per flagged row |
 | Numbers differ from Expected, or rows are attributed to the wrong department | The agent wrote its own MDX. Re-paste the instructions; do not add NON EMPTY or change the row sets |
 | Root cause shows empty | Expected for non-flagged rows — RootCause text is stored only where variance_flag=1 in the CSV |
 
