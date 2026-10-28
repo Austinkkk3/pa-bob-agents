@@ -43,6 +43,14 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 
 command -v orchestrate >/dev/null || { echo "The orchestrate CLI is not installed. Run: pip install ibm-watsonx-orchestrate"; exit 1; }
 
+# The API key and the PA password must be typed in a real terminal so they stay hidden.
+# Bob's command runner is not one: there, what you type would be echoed into the chat.
+if [ ! -t 0 ]; then
+  echo "Run this script yourself in the VS Code terminal (Terminal > New Terminal),"
+  echo "so the API key and password you type stay hidden. Bob cannot run it for you."
+  exit 2
+fi
+
 # The YAML files are used as they are; only the names change when VARIANT is set.
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
@@ -59,10 +67,11 @@ render fpa-orchestrator.adk.yaml
 echo "Building: ${DATA_AGENT}, ${ORCH_AGENT} (connection ${APP_ID}, toolkit ${TOOLKIT})"
 
 echo "== 1/5 Connect to Orchestrate ($ENV_NAME)"
-orchestrate env add -n "$ENV_NAME" -u "$WXO_URL" >/dev/null 2>&1 || echo "   environment '$ENV_NAME' already exists, reusing it"
-orchestrate env activate "$ENV_NAME"          # prompts for the API key
+orchestrate env add -n "$ENV_NAME" -u "$WXO_URL" </dev/null >/dev/null 2>&1 || echo "   environment '$ENV_NAME' already exists, reusing it"
+echo "   Paste your Orchestrate API key and press Enter (nothing is shown while you type):"
+orchestrate env activate "$ENV_NAME"
 
-read -r -s -p "PA password for $PA_USER: " PA_PASSWORD; echo
+read -r -s -p "   PA password for $PA_USER (nothing is shown while you type): " PA_PASSWORD; echo
 
 echo "== 2/5 PA connection ($APP_ID)"
 orchestrate connections add -a "$APP_ID" >/dev/null 2>&1 || echo "   connection already exists, reusing it"
@@ -78,7 +87,11 @@ if COLUMNS=250 orchestrate toolkits list 2>/dev/null | grep -Eq "(^|[^[:alnum:]_
 else
   orchestrate toolkits add --kind mcp --name "$TOOLKIT" \
     --description "IBM Planning Analytics cube tools (read-only subset for the workshop)" \
-    --url "$PA_MCP_URL" --transport streamable_http --tools "$TOOLS" --app-id "$APP_ID"
+    --url "$PA_MCP_URL" --transport streamable_http --tools "$TOOLS" --app-id "$APP_ID" || {
+    echo "   Creating the toolkit failed. A 502 ConnectTimeout means Orchestrate could not reach"
+    echo "   the PA server in time: wait a minute and run this script again (it reuses what exists)."
+    exit 1
+  }
 fi
 
 echo "== 4/5 Import the agents"

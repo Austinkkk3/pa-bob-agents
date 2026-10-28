@@ -39,29 +39,43 @@ The files in this folder are ready to use. Bob should run them, not rewrite them
 
 ## Ask Bob to build the agents
 
-Switch Bob to **Agent** mode. Planning Analytics mode cannot run terminal commands, so Bob only hands you copy-paste blocks there.
+Bob does the setup and the checks. You run one command yourself in the VS Code terminal, because that is the only place where the API key and password you type stay hidden. Bob's own command runner would show them in the chat, so the script refuses to run there.
 
-Replace the two URLs, then send this in Bob:
+**1.** Open a new Bob task and switch Bob to **Agent** mode. Planning Analytics mode cannot run terminal commands, so Bob only hands you copy-paste blocks there.
+
+**2.** Replace the two URLs, then send this in Bob:
 
 ```
 Build the Lab 2 agents in my watsonx Orchestrate environment with the Orchestrate ADK.
-Use the files in lab-02-fpa-variance-autopilot/lab-02-9-build-with-bob/ exactly as they are:
-do not rewrite the YAML files or the agent instructions.
-
-1. Create a Python virtual environment .venv-adk in the workspace (Python 3.11-3.13)
-   and install ibm-watsonx-orchestrate in it.
-2. In that environment, run setup-agents.sh from that folder with
+Use the files in the repo exactly as they are: do not rewrite the YAML files, the script
+or the agent instructions. Run steps 1, 2 and 4 yourself in the terminal, one at a time.
+1. Clone https://github.com/Austinkkk3/pa-bob-agents.git into ~/pa-bob-agents-client,
+   or run git pull if it is already there.
+2. Check that Python 3.11-3.13 is available, create the virtual environment
+   ~/pa-bob-agents-client/.venv-adk with it and install ibm-watsonx-orchestrate.
+3. Do not run setup-agents.sh yourself: it asks for my Orchestrate API key and PA password,
+   and your command runner cannot hide what I type. Give me one command to paste into the
+   VS Code terminal that goes to lab-02-fpa-variance-autopilot/lab-02-9-build-with-bob,
+   activates the virtual environment and runs ./setup-agents.sh with
    WXO_URL=<my Orchestrate service instance URL>
    PA_MCP_URL=<PA MCP URL from the facilitator>
-   The script asks me for the Orchestrate API key and the PA password in the terminal.
-   Let me type them; never print, save or ask me to paste them into the chat.
-3. When it finishes, run "orchestrate agents list" and confirm that pa_data_agent and
-   fpa_variance_autopilot are there. If a step fails, show me the error and fix it.
+   Never ask me to paste the key or the password into the chat. Wait until I say it finished.
+4. Then run "orchestrate agents list" and "orchestrate toolkits list" and confirm that
+   pa_data_agent, fpa_variance_autopilot and planning-analytics-cube-mcp are there.
+   If a step fails, show me the error and fix it.
 ```
+
+**3.** Click **Approve once** for each command Bob wants to run (clone, Python check, virtual environment, install). Read each command before you approve it.
+
+**4.** When Bob gives you the command, open the VS Code terminal (**View → Terminal** or ⌘J), paste the command and press Enter. When asked, paste your Orchestrate API key, then type the PA password. Nothing is shown while you type.
+
+**5.** Wait for `Done.` (1–2 minutes), then tell Bob `It finished` so it can run the checks in step 4 of the prompt.
+
+> If step 3/5 fails with `502 ... ConnectTimeout`, Orchestrate could not reach the PA server in time. Wait a minute and run the same command again (press ↑ in the terminal); it reuses what was already created.
 
 ### Build a second copy next to existing agents
 
-If the environment already has the Lab 2 agents (for example a facilitator demo), run the script with `VARIANT=Bob` (add it next to `WXO_URL` in the prompt). It builds **PA Data Agent (Bob)** and **FP&A Variance Autopilot (Bob)** with their own connection (`planning-analytics-basic-bob`) and toolkit (`planning-analytics-cube-mcp-bob`). The agents, connection and toolkit without the suffix are not changed.
+If the environment already has the Lab 2 agents (for example a facilitator demo), run the script with `VARIANT=Bob` (add it next to `WXO_URL` in the prompt, and add `_bob` / `-bob` to the names in step 4). It builds **PA Data Agent (Bob)** and **FP&A Variance Autopilot (Bob)** with their own connection (`planning-analytics-basic-bob`) and toolkit (`planning-analytics-cube-mcp-bob`). The agents, connection and toolkit without the suffix are not changed.
 
 Without `VARIANT`, the script reuses an existing `planning-analytics-basic` connection and toolkit and updates agents with the same names.
 
@@ -90,3 +104,6 @@ Expected: the same report as Lab 2.5 — 4 material variances (🔴 NA Sales REV
 | Agent import says a tool is not found | Run `orchestrate tools list` and check that the 6 tools start with `planning-analytics-cube-mcp:` |
 | Bob rewrites the YAML or instructions | Stop it and resend the prompt; the files must be used as they are |
 | Bob gives you commands to paste instead of running them | Switch Bob to **Agent** mode and ask it to run the steps itself |
+| `Run this script yourself in the VS Code terminal` | Bob tried to run `setup-agents.sh`. Copy the command into the VS Code terminal and run it there |
+| You typed the API key into the Bob chat by mistake | Delete that key in Orchestrate (Settings → API details), generate a new one, and delete that Bob task |
+| `502 ... ConnectTimeout` when creating the toolkit | Wait a minute and re-run the script; it reuses the connection that was already created |
