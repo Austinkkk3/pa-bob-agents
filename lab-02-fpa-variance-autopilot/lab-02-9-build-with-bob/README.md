@@ -1,0 +1,83 @@
+# Lab 2.9 — Build the Lab 2 Agents with Bob *(draft — being tested)*
+
+**Duration:** ~15 minutes (after the one-time setup)
+**Replaces:** Labs 2.1, 2.2 (Steps 1–5) and 2.5 when each participant has their own Orchestrate environment
+**Prerequisite:** [Lab 0](../../lab-00-setup/README.md) ✅ · your own watsonx Orchestrate environment
+
+> ⚠️ This path has not been run end to end yet. Use the click-through labs (2.1 → 2.2 → 2.5) for a live session until this note is removed.
+
+---
+
+## Goal
+
+Instead of clicking through the Orchestrate UI, ask Bob to build the same two agents with the watsonx Orchestrate **Agent Development Kit (ADK)**:
+
+| What | Name | Notes |
+|------|------|-------|
+| PA connection | `planning-analytics-basic` | Basic Auth, team credentials, draft and live |
+| PA MCP toolkit | `planning-analytics-cube-mcp` | 6 read-only tools |
+| Sub-agent | `pa_data_agent` (PA Data Agent) | Same validated instructions as Lab 2.2 |
+| Orchestrator | `fpa_variance_autopilot` (FP&A Variance Autopilot) | Same instructions as Lab 2.5, collaborator `pa_data_agent` |
+
+The files in this folder are ready to use. Bob should run them, not rewrite them: the PA Data Agent's fixed MDX was tested and is easy to break.
+
+| File | Purpose |
+|------|---------|
+| [`pa-data-agent.adk.yaml`](pa-data-agent.adk.yaml) | PA Data Agent with its 6 tools, GPT-OSS 120B, ReAct Core style |
+| [`fpa-orchestrator.adk.yaml`](fpa-orchestrator.adk.yaml) | Orchestrator with `pa_data_agent` as collaborator |
+| [`setup-agents.sh`](setup-agents.sh) | Creates the connection and toolkit, imports both agents, deploys them to Live |
+
+---
+
+## Before you start
+
+- **Python 3.11–3.13** on your laptop (`python3 --version`). The Python that ships with macOS is too old; install a newer one from python.org or with Homebrew.
+- **Orchestrate API key and service URL:** in Orchestrate, open your profile menu → **Settings** → **API details** → generate an API key. Copy the service instance URL shown on the same page.
+- **PA MCP URL** from your facilitator: `http://<HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp`
+
+---
+
+## Ask Bob to build the agents
+
+Replace the two URLs, then send this in Bob:
+
+```
+Build the Lab 2 agents in my watsonx Orchestrate environment with the Orchestrate ADK.
+Use the files in lab-02-fpa-variance-autopilot/lab-02-9-build-with-bob/ exactly as they are:
+do not rewrite the YAML files or the agent instructions.
+
+1. Create a Python virtual environment .venv-adk in the workspace (Python 3.11-3.13)
+   and install ibm-watsonx-orchestrate in it.
+2. In that environment, run setup-agents.sh from that folder with
+   WXO_URL=<my Orchestrate service instance URL>
+   PA_MCP_URL=<PA MCP URL from the facilitator>
+   The script asks me for the Orchestrate API key and the PA password in the terminal.
+   Let me type them; never print, save or ask me to paste them into the chat.
+3. When it finishes, run "orchestrate agents list" and confirm that pa_data_agent and
+   fpa_variance_autopilot are there. If a step fails, show me the error and fix it.
+```
+
+---
+
+## Test
+
+In Orchestrate → **Chat**, pick **FP&A Variance Autopilot** and ask:
+
+```
+Run the FP&A variance analysis for January 2024 on the FPA_Variance cube on smartco.
+Identify all material variances, explain the root causes, and generate a full variance report.
+```
+
+Expected: the same report as Lab 2.5 — 4 material variances (🔴 NA Sales REV-001 -$175,000, 🔴 NA Sales OPEX-001 +$25,000, 🟡 IT OPEX-007 +$14,000, ✅ NA Sales OPEX-004 -$17,500) and company totals of TOTAL-REV -$147,000 (-7.44%).
+
+---
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| `orchestrate: command not found` | The virtual environment is not active. Ask Bob to activate `.venv-adk` and re-run |
+| Python version error during install | Install Python 3.12 and recreate `.venv-adk` with it |
+| `401` or authentication error | Regenerate the API key and check `WXO_URL` is the service instance URL from API details |
+| Agent import says a tool is not found | Run `orchestrate tools list` and check that the 6 tools start with `planning-analytics-cube-mcp:` |
+| Bob rewrites the YAML or instructions | Stop it and resend the prompt; the files must be used as they are |
