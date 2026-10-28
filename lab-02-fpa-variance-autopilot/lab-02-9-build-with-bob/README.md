@@ -39,6 +39,8 @@ The files in this folder are ready to use. Bob should run them, not rewrite them
 
 ## Ask Bob to build the agents
 
+Switch Bob to **Agent** mode. Planning Analytics mode cannot run terminal commands, so Bob only hands you copy-paste blocks there.
+
 Replace the two URLs, then send this in Bob:
 
 ```
@@ -56,6 +58,12 @@ do not rewrite the YAML files or the agent instructions.
 3. When it finishes, run "orchestrate agents list" and confirm that pa_data_agent and
    fpa_variance_autopilot are there. If a step fails, show me the error and fix it.
 ```
+
+### Build a second copy next to existing agents
+
+If the environment already has the Lab 2 agents (for example a facilitator demo), run the script with `VARIANT=Bob` (add it next to `WXO_URL` in the prompt). It builds **PA Data Agent (Bob)** and **FP&A Variance Autopilot (Bob)** with their own connection (`planning-analytics-basic-bob`) and toolkit (`planning-analytics-cube-mcp-bob`). The agents, connection and toolkit without the suffix are not changed.
+
+Without `VARIANT`, the script reuses an existing `planning-analytics-basic` connection and toolkit and updates agents with the same names.
 
 ---
 
@@ -81,3 +89,4 @@ Expected: the same report as Lab 2.5 — 4 material variances (🔴 NA Sales REV
 | `401` or authentication error | Regenerate the API key and check `WXO_URL` is the service instance URL from API details |
 | Agent import says a tool is not found | Run `orchestrate tools list` and check that the 6 tools start with `planning-analytics-cube-mcp:` |
 | Bob rewrites the YAML or instructions | Stop it and resend the prompt; the files must be used as they are |
+| Bob gives you commands to paste instead of running them | Switch Bob to **Agent** mode and ask it to run the steps itself |

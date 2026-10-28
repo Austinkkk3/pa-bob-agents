@@ -13,6 +13,11 @@
 #   export PA_MCP_URL="http://<HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp"
 #   ./setup-agents.sh
 #
+# Optional: VARIANT=Bob ./setup-agents.sh builds a separate copy next to existing agents:
+#   "PA Data Agent (Bob)" / pa_data_agent_bob, "FP&A Variance Autopilot (Bob)" /
+#   fpa_variance_autopilot_bob, with its own connection and toolkit (names ending in -bob).
+#   Agents, connection and toolkit without the suffix are not touched.
+#
 # The script asks for the Orchestrate API key and the PA password and never prints them.
 # Safe to re-run: existing connection and toolkit are reused, agents are updated.
 
@@ -22,12 +27,36 @@ set -euo pipefail
 : "${PA_MCP_URL:?Set PA_MCP_URL to http://<HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp}"
 PA_USER="${PA_USER:-pm}"
 ENV_NAME="${ENV_NAME:-workshop}"
-APP_ID="planning-analytics-basic"
-TOOLKIT="planning-analytics-cube-mcp"
+VARIANT="${VARIANT:-}"
+case "$VARIANT" in
+  "") SUFFIX="" ;;
+  *[!A-Za-z0-9]*) echo "VARIANT may contain only letters and digits, for example VARIANT=Bob"; exit 1 ;;
+  *) SUFFIX="$(printf '%s' "$VARIANT" | tr '[:upper:]' '[:lower:]')" ;;
+esac
+APP_ID="planning-analytics-basic${SUFFIX:+-$SUFFIX}"
+TOOLKIT="planning-analytics-cube-mcp${SUFFIX:+-$SUFFIX}"
+DATA_AGENT="pa_data_agent${SUFFIX:+_$SUFFIX}"
+ORCH_AGENT="fpa_variance_autopilot${SUFFIX:+_$SUFFIX}"
+LABEL="${VARIANT:+ ($VARIANT)}"
 TOOLS="get_available_tm1_servers,get_tm1_cubes,get_cube_dimensions,get_cube_sample_members,execute_mdx_and_get_view,lookup_potential_members"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 
 command -v orchestrate >/dev/null || { echo "The orchestrate CLI is not installed. Run: pip install ibm-watsonx-orchestrate"; exit 1; }
+
+# The YAML files are used as they are; only the names change when VARIANT is set.
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+render() {
+  sed -e "s/planning-analytics-cube-mcp:/$TOOLKIT:/g" \
+      -e "s/pa_data_agent/$DATA_AGENT/g" \
+      -e "s/^name: fpa_variance_autopilot\$/name: $ORCH_AGENT/" \
+      -e "s/^display_name: \\(.*\\)\$/display_name: \\1$LABEL/" \
+      "$HERE/$1" > "$WORK/$1"
+}
+render pa-data-agent.adk.yaml
+render fpa-orchestrator.adk.yaml
+
+echo "Building: ${DATA_AGENT}, ${ORCH_AGENT} (connection ${APP_ID}, toolkit ${TOOLKIT})"
 
 echo "== 1/5 Connect to Orchestrate ($ENV_NAME)"
 orchestrate env add -n "$ENV_NAME" -u "$WXO_URL" >/dev/null 2>&1 || echo "   environment '$ENV_NAME' already exists, reusing it"
@@ -44,7 +73,7 @@ done
 unset PA_PASSWORD
 
 echo "== 3/5 PA MCP toolkit ($TOOLKIT, 6 read-only tools)"
-if orchestrate toolkits list 2>/dev/null | grep -q "$TOOLKIT"; then
+if COLUMNS=250 orchestrate toolkits list 2>/dev/null | grep -Eq "(^|[^[:alnum:]_-])${TOOLKIT}([^[:alnum:]_-]|\$)"; then
   echo "   toolkit already exists, reusing it"
 else
   orchestrate toolkits add --kind mcp --name "$TOOLKIT" \
@@ -53,14 +82,14 @@ else
 fi
 
 echo "== 4/5 Import the agents"
-orchestrate agents import -f "$HERE/pa-data-agent.adk.yaml"
-orchestrate agents import -f "$HERE/fpa-orchestrator.adk.yaml"
+orchestrate agents import -f "$WORK/pa-data-agent.adk.yaml"
+orchestrate agents import -f "$WORK/fpa-orchestrator.adk.yaml"
 
 echo "== 5/5 Deploy to Live"
-orchestrate agents deploy -n pa_data_agent
-orchestrate agents deploy -n fpa_variance_autopilot
+orchestrate agents deploy -n "$DATA_AGENT"
+orchestrate agents deploy -n "$ORCH_AGENT"
 
 echo
-echo "Done. Open Orchestrate > Chat, pick 'FP&A Variance Autopilot' and ask:"
+echo "Done. Open Orchestrate > Chat, pick 'FP&A Variance Autopilot${LABEL}' and ask:"
 echo "  Run the FP&A variance analysis for January 2024 on the FPA_Variance cube on smartco."
 echo "Expected: 4 material variances (2 HIGH, 1 MEDIUM, 1 FAVORABLE)."
