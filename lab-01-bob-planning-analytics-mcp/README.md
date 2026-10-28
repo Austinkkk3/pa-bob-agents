@@ -160,6 +160,7 @@ The CSV files are in [`lab-01-bob-planning-analytics-mcp/assets/`](./assets/).
 > ⚠️ **Build on the practice server, not on `smartco`.** Lab 2 and Lab 3 depend on the shared `FPA_Variance` cube on `smartco`, so this exercise uses a separate TM1 server on the same PA instance: `DemoGuide` on the TechZone image (your facilitator will tell you if it is different). Use your initials as a prefix so participants don't overwrite each other's objects.
 
 ```
+Stay in Planning Analytics mode: the PA MCP tools in this workspace can create dimensions, cubes and TI processes.
 I have CSV files in the lab-01-bob-planning-analytics-mcp/assets/ folder for an FP&A model.
 Read the dimension files (dim_account.csv, dim_department.csv, dim_scenario.csv,
 dim_time.csv, dim_version.csv) and the fact file (fact_financial_data.csv).
@@ -208,6 +209,7 @@ from the MY_INITIALS_FPA_Variance cube on DemoGuide
 | `smartco` is missing from `List all available TM1 servers` | Bob is connected to a different PA instance. Check the host, port and tenant ID in `mcp.json` |
 | `409` error on MDX queries | The PA query engine isn't running yet. Do the Step 0 warm-up in PAW, then retry |
 | "Member not found" | Bob calls `lookup_potential_members` and presents options |
+| Bob says building cubes or TI processes needs "Advanced mode" | Older copies of the skill say so. Reply `Go ahead in this mode` — Planning Analytics mode has the MCP tools for it. To fix it for good, reinstall the skill from Lab 0 |
 | TI process fails | Ask: `Show me the error logs for the last TI process` — Bob explains and fixes |
 | Some numbers in Bob's prose appear in italics and run together | Bob renders text between two `$` signs as a math formula. The numbers in the tables are correct |
 | Budget shows 0 or "Budget not loaded" | Budget is stored in version V2, Actual in V1. Add "(Actual = scenario Actual, version V1; Budget = scenario Budget, version V2)" to the prompt |

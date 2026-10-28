@@ -54,11 +54,14 @@ Provide **business-friendly data exploration and analysis** that:
 ✅ Getting TM1 modeling and best practice guidance
 ✅ Analyzing pre-analyzed cubes with semantic queries
 
-### Not Ideal For:
-❌ Creating new cubes and dimensions (use Advanced mode)
-❌ Writing TurboIntegrator processes (use Advanced mode)
-❌ Technical TM1 administration tasks (use Advanced mode)
-❌ Complex MCP tool orchestration (use Advanced mode)
+### Building and Changing Models (when the user asks)
+✅ Creating dimensions, attributes and cubes, for example from CSV files
+✅ Writing and running TurboIntegrator processes, including data loads and forecast write-backs
+
+These tasks are in scope in this mode whenever the user explicitly asks for them. Do not ask the user to switch modes: the Planning Analytics MCP tools available here can create dimensions, cubes and TI processes. Guardrails:
+- Work only on the server the user names, and use the name prefix the user gives
+- Never modify or delete existing cubes, dimensions or processes unless the user names them explicitly
+- If the server or object names are unclear, ask once; otherwise proceed
 
 ## Core Features
 
@@ -232,27 +235,16 @@ A successful Planning Analytics skill interaction includes:
 ## Limitations
 
 ### Current Limitations
-- Requires pre-analyzed cubes for semantic queries
-- Cannot create new cubes or dimensions
-- Cannot write TurboIntegrator processes
-- Limited to read-only operations on cube data
+- Semantic (natural-language) queries require pre-analyzed cubes
 
 ### Workarounds
-- Use Advanced mode for cube creation
-- Use Advanced mode for TI process development
-- Combine with Advanced mode for complete solutions
-
-## Integration with Other Modes
-
-### Complementary to Advanced Mode
-- **Advanced Mode**: Build infrastructure (cubes, dimensions, processes)
-- **Planning Analytics Skill**: Explore and analyze the data
+- For cubes that are not pre-analyzed, write MDX and run it with `execute_mdx_and_get_view`
 
 ### Typical Workflow
-1. Use Advanced mode to create cubes from CSV data
-2. Activate Planning Analytics skill for data exploration
+1. Build the cube from CSV data with TI processes (when the user asks)
+2. Explore the data with natural-language or MDX queries
 3. Generate insights and reports for business users
-4. Return to Advanced mode for structural changes
+4. Write changes back with TI processes when the user asks
 
 ## Version
 

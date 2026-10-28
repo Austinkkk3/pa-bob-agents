@@ -130,7 +130,7 @@ OPEX-001 2024-01 = 145000, OPEX-001 2024-02 = 133500, OPEX-001 2024-03 = 138500.
 Write one cell at a time and confirm each write.
 ```
 
-> Two things went wrong with a vaguer prompt in testing. Bob refused because the planning-analytics skill says TI work belongs in "Advanced mode", and it planned 8 different cells (February and March only, plus REV-003 and OPEX-004). If Bob still asks you to switch modes, reply `Go ahead in this mode`.
+> Two things went wrong with a vaguer prompt in testing. Bob refused because older copies of the planning-analytics skill say TI work belongs in "Advanced mode" (the skill in this repo no longer does), and it planned 8 different cells (February and March only, plus REV-003 and OPEX-004). If Bob still asks you to switch modes, reply `Go ahead in this mode`.
 
 > Bob will call `execute_tm1_processes_asynchronously` with the `FPA_Write_Forecast` TI process for each cell. You will see it confirm each write before moving to the next.
 
