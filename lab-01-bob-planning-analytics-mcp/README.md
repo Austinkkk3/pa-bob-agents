@@ -153,14 +153,14 @@ in the FPA_Variance cube on smartco
 
 The CSV files are in [`lab-01-bob-planning-analytics-mcp/assets/`](./assets/).
 
-> ⚠️ **This workshop uses a shared `smartco` server.** Lab 2 and Lab 3 depend on a shared `FPA_Variance` cube — do NOT modify or delete it. Build your own private copy using your initials as a prefix.
+> ⚠️ **Build on the practice server, not on `smartco`.** Lab 2 and Lab 3 depend on the shared `FPA_Variance` cube on `smartco`, so this exercise uses a separate TM1 server on the same PA instance: `DemoGuide` on the TechZone image (your facilitator will tell you if it is different). Use your initials as a prefix so participants don't overwrite each other's objects.
 
 ```
 I have CSV files in the lab-01-bob-planning-analytics-mcp/assets/ folder for an FP&A model.
 Read the dimension files (dim_account.csv, dim_department.csv, dim_scenario.csv,
 dim_time.csv, dim_version.csv) and the fact file (fact_financial_data.csv).
 
-Create a complete TM1 model on the smartco server using MY_INITIALS as a prefix
+Create a complete TM1 model on the DemoGuide server using MY_INITIALS as a prefix
 (replace MY_INITIALS with your actual initials, e.g. "JD"):
 - Create dimensions named MY_INITIALS_FPA_Account, MY_INITIALS_FPA_Department, etc.
 - Store descriptive CSV columns as text attributes (not aliases)
@@ -170,11 +170,12 @@ Create a complete TM1 model on the smartco server using MY_INITIALS as a prefix
 - Write a TurboIntegrator process to load all 280 fact rows:
   - Use CellPutN for Amount values
   - Use CellPutS for RootCause text where variance_explanation is not empty
+- Start the name of every TI process you create with MY_INITIALS_
 - Execute the process and confirm the data loaded correctly
-- Do NOT modify or delete FPA_Variance or any FPA_* object
+- Work only on the DemoGuide server. Do not create, modify or delete anything on smartco or any other server.
 ```
 
-> **Note:** Bob embeds all data rows directly in TI code (no file data source). Check that the load confirms 280 cells written. In testing the whole build took about 6 minutes: Bob uses the planning-analytics skill, makes a 12-step to-do list, builds 6 dimensions with TI processes, creates the cube, then loads and spot-checks the data.
+> **Note:** Bob embeds all data rows directly in TI code (no file data source). In testing on `DemoGuide` the whole build took about 6.5 minutes and about 9 Bob coins: Bob uses the planning-analytics skill, makes a to-do list, builds 6 dimensions with TI processes, creates the cube, then loads and spot-checks the data. Bob's summary may say 281 rows; the CSV has 280 data rows, so use the verification query below to confirm the load.
 
 ![Bob reads the CSVs, loads the skill and plans the build](assets/screenshots/lab1-ex5-01-start-skill-todo.jpg)
 
@@ -185,7 +186,7 @@ Create a complete TM1 model on the smartco server using MY_INITIALS as a prefix
 Verify the load:
 ```
 Show me NA Sales actual revenue for Q1 2024 across all accounts
-from the MY_INITIALS_FPA_Variance cube on smartco
+from the MY_INITIALS_FPA_Variance cube on DemoGuide
 ```
 
 > Expected: REV-001 Q1 = 1,545,000; REV-003 Q1 = 565,000; Total Revenue Q1 = 2,110,000.

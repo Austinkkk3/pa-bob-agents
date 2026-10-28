@@ -27,6 +27,16 @@ http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp
 
 ---
 
+### Practice server for Lab 1 Exercise 5
+
+Exercise 5 has every participant build a cube, 6 dimensions and several TI processes. To keep `smartco` clean for Lab 2 and Lab 3, participants build on a separate TM1 server on the same PA instance: **`DemoGuide`** on the TechZone image (one near-empty cube, no rules, no system processes). If you use a different server, update the server name in the Exercise 5 prompts.
+
+- **Before the session:** ask Bob `List all available TM1 servers` and confirm `DemoGuide` is there.
+- **After the session:** delete the objects participants created on `DemoGuide` (all start with their initials).
+- **Large groups:** each build takes about 6.5 minutes and about 9 Bob coins, and the load of many builds at once has not been tested. With 10+ participants, consider demoing Exercise 5 instead.
+
+---
+
 ## Section 2 — watsonx Orchestrate
 
 Used in Lab 2 only. Each participant gets their own Orchestrate environment.
