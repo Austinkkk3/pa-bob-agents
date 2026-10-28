@@ -14,6 +14,8 @@ Thumbs.db
 
 # ── Archives ──────────────────────────────────────────────────────────────────
 *.zip
+# Exception: the Bob skill download used in Lab 0
+!lab-00-setup/planning-analytics-skill.zip
 
 # ── Editor ───────────────────────────────────────────────────────────────────
 .vscode/
