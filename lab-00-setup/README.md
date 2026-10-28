@@ -8,7 +8,7 @@
 ## Prerequisites
 
 - IBM Bob IDE installed and logged in ([download here](https://bob.ibm.com/download))
-- TechZone credentials from your facilitator: `HOST`, `PORT`, `TENANT_ID`
+- Your TechZone Planning Analytics URL (from your facilitator or your reservation page)
 - Workshop folder open as your workspace root in Bob
 
 > ⚠️ **Planning Analytics version must be 2.1.20** — other versions are not compatible with the MCP tools used in this workshop.
@@ -60,17 +60,21 @@ After Bob confirms, restart Bob. The mode selector should show **📊 Planning A
 
 ## Step 2 — Configure MCP
 
-MCP (Model Context Protocol) is what lets Bob talk directly to your Planning Analytics TM1 server. You will point Bob at your TechZone environment by editing one JSON file.
+MCP (Model Context Protocol) is the bridge that lets Bob call your Planning Analytics TM1 server directly. The whole setup is one prompt — just paste your TechZone URL and Bob does the rest.
 
-### What you need first
+### What you need
 
-Get these three values from your facilitator (written on the screen or whiteboard):
+**One URL** — your Planning Analytics TechZone environment URL.  
+It looks like one of these:
 
-| Value | Example | Where to get it |
-|-------|---------|-----------------|
-| `TECHZONE_HOST` | `192.168.100.50` | Facilitator / TechZone reservation page |
-| `PORT` | `8080` | Facilitator |
-| `TENANT_ID` | `abc123def` | Facilitator |
+```
+http://192.168.100.50:8080/api/abc123def/v0/...
+http://pa-demo.techzone.ibm.com:443/api/abc123def/v0/...
+```
+
+Where to find it:
+- Your facilitator will display it on the screen, **or**
+- Go to [techzone.ibm.com](https://techzone.ibm.com) → **My Reservations** → click your environment → copy the **Planning Analytics URL**
 
 Your login credentials for this workshop are fixed:
 
@@ -81,109 +85,53 @@ Your login credentials for this workshop are fixed:
 
 ---
 
-### 2a — Generate your Base64 credential string
+### The prompt — paste this into Bob
 
-The MCP connection uses HTTP Basic Auth, which requires your credentials encoded in Base64.
+Copy the block below, **replace the URL on the first line** with your real TechZone URL, then send it to Bob:
 
-**Mac / Linux** — open Terminal and run:
-```bash
-echo -n "pm:IBMDem0s" | base64
+```
+My Planning Analytics TechZone URL is: http://<YOUR_TECHZONE_URL_HERE>
+Username: pm
+Password: IBMDem0s
+
+Please configure my MCP connection by doing the following:
+1. Parse the HOST, PORT, and TENANT_ID out of the URL I gave you.
+   The URL format is: http://<HOST>:<PORT>/api/<TENANT_ID>/v0/...
+2. Compute the Base64 encoding of "pm:IBMDem0s" — the result is cG06SUJNRGVtMHM=
+3. Read the MCP template from lab-00-setup/mcp.json in my workspace.
+4. Substitute all four placeholders in the template:
+   - <TECHZONE_HOST> → the HOST you parsed
+   - <PORT>          → the PORT you parsed
+   - <TENANT_ID>     → the TENANT_ID you parsed
+   - <BASE64_CREDENTIALS> → cG06SUJNRGVtMHM=
+5. Open Cmd+Shift+P → Bob: Open MCP Settings and replace the entire
+   contents of mcp.json with the fully substituted JSON.
+6. Save the file.
+7. Run Cmd+Shift+P → Bob: Restart.
+8. After restarting, call the list-servers tool and confirm DemoGuide
+   appears in the response.
 ```
 
-**Windows (PowerShell)** — run:
-```powershell
-[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("pm:IBMDem0s"))
-```
-
-Both commands produce the same output:
-```
-cG06SUJNRGVtMHM=
-```
-
-> ⚠️ Copy the **exact** output — no extra spaces or line breaks. This string does not change because the username and password are fixed for this workshop.
+Bob will parse the URL, fill in `mcp.json`, save it, restart, and verify the connection — no manual editing required.
 
 ---
 
-### 2b — Open the MCP Settings file in Bob
+### What Bob does behind the scenes
 
-1. Make sure Bob (VS Code) is in focus.
-2. Press **`Cmd+Shift+P`** (Mac) or **`Ctrl+Shift+P`** (Windows) to open the Command Palette.
-3. Type `Bob: Open MCP Settings` and press **Enter**.
+Given the URL `http://192.168.100.50:8080/api/abc123def/v0/agentic-ai/...`, Bob extracts:
 
-> A file called `mcp.json` opens in the editor. It may be empty `{}` or contain a previous configuration — that is fine, you will replace it entirely.
+| Placeholder | Extracted value |
+|-------------|----------------|
+| `<TECHZONE_HOST>` | `192.168.100.50` |
+| `<PORT>` | `8080` |
+| `<TENANT_ID>` | `abc123def` |
+| `<BASE64_CREDENTIALS>` | `cG06SUJNRGVtMHM=` |
 
----
-
-### 2c — Fill in the MCP template
-
-Open [`lab-00-setup/mcp.json`](./mcp.json) in this repository. It looks like this:
-
-```json
-{
-  "mcpServers": {
-    "ibm-pa-tools-tz-server": {
-      "type": "streamable-http",
-      "url": "http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/analysis/mcp",
-      "headers": {
-        "Authorization": "Basic <BASE64_CREDENTIALS>",
-        "Accept": "text/event-stream",
-        "Cache-Control": "no-cache"
-      },
-      ...
-    },
-    "ibm-pa-tools-tz-cube": {
-      "type": "streamable-http",
-      "url": "http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp",
-      "headers": {
-        "Authorization": "Basic <BASE64_CREDENTIALS>",
-        ...
-      },
-      ...
-    }
-  }
-}
-```
-
-**Replace all four placeholders** with your real values:
-
-| Placeholder | Replace with | Example result |
-|-------------|-------------|----------------|
-| `<TECHZONE_HOST>` | Your HOST from the facilitator | `192.168.100.50` |
-| `<PORT>` | Your PORT from the facilitator | `8080` |
-| `<TENANT_ID>` | Your TENANT_ID from the facilitator | `abc123def` |
-| `<BASE64_CREDENTIALS>` | Output from Step 2a | `cG06SUJNRGVtMHM=` |
-
-> 💡 There are **two** places where `<TECHZONE_HOST>`, `<PORT>`, `<TENANT_ID>`, and `<BASE64_CREDENTIALS>` appear — one for the `ibm-pa-tools-tz-server` block and one for the `ibm-pa-tools-tz-cube` block. Replace all occurrences.
-
-**Paste the fully substituted JSON** into the `mcp.json` file that Bob opened, replacing everything that was there before.
+It then writes these into **both** server blocks in `mcp.json` (`ibm-pa-tools-tz-server` and `ibm-pa-tools-tz-cube`), saves, and restarts.
 
 ---
 
-### 2d — Save the file
-
-Press **`Cmd+S`** (Mac) or **`Ctrl+S`** (Windows) to save `mcp.json`.
-
----
-
-### 2e — Restart Bob
-
-1. Press **`Cmd+Shift+P`** (Mac) or **`Ctrl+Shift+P`** (Windows).
-2. Type `Bob: Restart` and press **Enter**.
-3. Wait about 10–15 seconds for Bob to reload.
-
----
-
-### 2f — Verify the connection
-
-After Bob restarts, send this message in the chat:
-
-```
-List all available TM1 servers
-```
-
-Bob should reply with a list that includes `DemoGuide`. If it does, the MCP connection is working.
-
-✅ **Done when:** Bob returns a list of TM1 server names with no error messages.
+✅ **Done when:** Bob confirms it can see `DemoGuide` (or another TM1 server name) after restarting.
 
 ---
 
@@ -204,10 +152,10 @@ List all available TM1 servers
 | Symptom | Fix |
 |---------|-----|
 | Mode not in selector | Check `.bob/custom_modes.yaml` exists → restart Bob |
-| `401 Unauthorized` | Re-check base64 encoding — format must be `username:password` (no spaces) before encoding |
-| `Connection refused` | Confirm HOST and PORT with facilitator; check you are on the same network as the TechZone environment |
+| `401 Unauthorized` | Credentials wrong — confirm `pm` / `IBMDem0s` and that the Base64 value is `cG06SUJNRGVtMHM=` |
+| `Connection refused` | Wrong HOST or PORT — re-check the URL with your facilitator; confirm you are on the same network |
 | MCP servers show disconnected | Save `mcp.json` → Bob: Restart |
-| Both `<TECHZONE_HOST>` placeholders not replaced | Search the file for `<` — every placeholder must be gone before saving |
+| Bob says it cannot find the URL pattern | Paste just the base URL (up to and including the TENANT_ID segment) and ask Bob to try again |
 
 ---
 
