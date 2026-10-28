@@ -180,7 +180,21 @@ Create a complete TM1 model on the DemoGuide server using MY_INITIALS as a prefi
 - Work only on the DemoGuide server. Do not create, modify or delete anything on smartco or any other server.
 ```
 
-> **Note:** Bob embeds all data rows directly in TI code (no file data source). In testing on `DemoGuide` the whole build took about 6.5 minutes and about 9 Bob coins: Bob uses the planning-analytics skill, makes a to-do list, builds 6 dimensions with TI processes, creates the cube, then loads and spot-checks the data. Bob's summary may say 281 rows; the CSV has 280 data rows, so use the verification query below to confirm the load.
+### ⏱ This step takes 6–7 minutes — here is what Bob is doing
+
+On a clean server the build took about 6.5 minutes and about 9 Bob coins in testing. It is the longest step in the workshop. Bob is not stuck while the screen is quiet; let it finish, and approve any tool call it asks about.
+
+| Stage | What you see in Bob | What happens behind the scenes | Time |
+|-------|---------------------|-------------------------------|------|
+| 1. Plan | "Used skill planning-analytics", a to-do list | Bob reads the skill and the six CSV files, then plans the build | ~30 s |
+| 2. Dimensions | "Create Tm1 Process", "Update Tm1 Process", "Execute Tm1 Processes Asynchronously" | For each of the 6 dimensions, Bob writes a TurboIntegrator (TI) process that creates the members, the roll-ups (such as `TOTAL-REV` and `TOTAL-COMPANY`) and the text attributes, then runs it on `DemoGuide` | 2–3 min |
+| 3. Cube | Another TI process | Bob creates `MY_INITIALS_FPA_Variance` with `FPA_Measures` as the last dimension | ~30 s |
+| 4. Data load | A long pause, then "Create Tm1 Process" and "Get Tm1 Server Process Status" | Bob writes one TI process with all 280 data rows embedded in its code (`CellPutN` for amounts, `CellPutS` for root-cause text), runs it and checks its status until it finishes. Writing that much code is why the screen looks idle | 1–2 min |
+| 5. Check | "Execute Mdx And Get View" | Bob reads a few cells back to confirm the numbers and text match the CSV | ~1 min |
+
+> **Why are the rows inside the TI code?** The Planning Analytics server runs in the cloud and cannot read files on your laptop, so Bob copies the CSV data into the TI process itself instead of using a file data source.
+
+Bob's summary may say 281 rows; the CSV has 280 data rows, so use the verification query below to confirm the load.
 
 > **Running Exercise 5 a second time?** Use a new prefix (for example `JD2`) or ask Bob to delete your earlier `MY_INITIALS_` objects first. Leftover objects from a previous attempt make Bob work around them (TM1 locks a dimension while a cube uses it), which adds extra processes and can double the build time.
 
