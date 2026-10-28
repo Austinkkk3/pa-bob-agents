@@ -182,6 +182,8 @@ Create a complete TM1 model on the DemoGuide server using MY_INITIALS as a prefi
 
 > **Note:** Bob embeds all data rows directly in TI code (no file data source). In testing on `DemoGuide` the whole build took about 6.5 minutes and about 9 Bob coins: Bob uses the planning-analytics skill, makes a to-do list, builds 6 dimensions with TI processes, creates the cube, then loads and spot-checks the data. Bob's summary may say 281 rows; the CSV has 280 data rows, so use the verification query below to confirm the load.
 
+> **Running Exercise 5 a second time?** Use a new prefix (for example `JD2`) or ask Bob to delete your earlier `MY_INITIALS_` objects first. Leftover objects from a previous attempt make Bob work around them (TM1 locks a dimension while a cube uses it), which adds extra processes and can double the build time.
+
 ![Bob reads the CSVs, loads the skill and plans the build](assets/screenshots/lab1-ex5-01-start-skill-todo.jpg)
 
 ![Dimensions and cube created via TI processes](assets/screenshots/lab1-ex5-02-dims-cube-built.jpg)
