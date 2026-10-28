@@ -184,6 +184,8 @@ Create a complete TM1 model on the DemoGuide server using MY_INITIALS as a prefi
 
 On a clean server the build took about 6.5 minutes and about 9 Bob coins in testing. It is the longest step in the workshop. Bob is not stuck while the screen is quiet; let it finish, and approve any tool call it asks about.
 
+![What Bob does in Exercise 5: reads the CSVs, sends TI processes through the PA MCP server, runs them on DemoGuide, then reads cells back to check](assets/diagrams/lab1-ex5-00-what-bob-does.png)
+
 | Stage | What you see in Bob | What happens behind the scenes | Time |
 |-------|---------------------|-------------------------------|------|
 | 1. Plan | "Used skill planning-analytics", a to-do list | Bob reads the skill and the six CSV files, then plans the build | ~30 s |
@@ -193,6 +195,20 @@ On a clean server the build took about 6.5 minutes and about 9 Bob coins in test
 | 5. Check | "Execute Mdx And Get View" | Bob reads a few cells back to confirm the numbers and text match the CSV | ~1 min |
 
 > **Why are the rows inside the TI code?** The Planning Analytics server runs in the cloud and cannot read files on your laptop, so Bob copies the CSV data into the TI process itself instead of using a file data source.
+
+#### Compared with building it by hand
+
+| Task | By hand (estimate, experienced TM1 developer) | With Bob (measured) |
+|------|-----------------------------------------------|---------------------|
+| Create 6 dimensions with roll-ups and text attributes | 30–45 min | 2–3 min |
+| Create the cube | ~5 min | ~30 s |
+| Write, run and debug a TI load from CSV (upload the file, map the columns, `CellPutN` / `CellPutS`) | 20–30 min | 1–2 min |
+| Spot-check the loaded data | ~10 min | ~1 min |
+| **Total** | **about 1–1.5 hours** | **about 6.5 min** |
+
+![Bob builds the Exercise 5 model in about 6.5 minutes; by hand it takes an estimated 60–90 minutes](assets/diagrams/lab1-ex5-06-time-vs-manual.png)
+
+The by-hand times are estimates, not measurements; someone new to TM1 would take considerably longer. What Bob saves most is the TurboIntegrator code: it writes, runs and fixes the processes itself, and the participant only reviews the result.
 
 Bob's summary may say 281 rows; the CSV has 280 data rows, so use the verification query below to confirm the load.
 
