@@ -17,8 +17,8 @@
 
 ## Step 1 — Install the Skill
 
-**Download the skill folder first:**
-Go to [github.com/Austinkkk3/pa-bob-agents/tree/main/planning-analytics-skill](https://github.com/Austinkkk3/pa-bob-agents/tree/main/planning-analytics-skill), download the folder (or clone the repo), and note where it is on your computer.
+**Download the skill first:**
+Click **[planning-analytics-skill.zip](https://github.com/Austinkkk3/pa-bob-agents/raw/main/lab-00-setup/planning-analytics-skill.zip)** to download it, then unzip it. You get a `planning-analytics-skill` folder with `SKILL.md`, `README.md` and `USAGE-GUIDE.md`; note where it is on your computer. If you cloned the repo, the same folder is at [`planning-analytics-skill/`](../planning-analytics-skill/).
 
 > **Alternative:** Download directly from the IBM Building Blocks repo:
 > Skill ZIP → [planning-analytics-skill.zip](https://github.com/ibm-self-serve-assets/building-blocks/blob/main/automation/optimize/budget-and-forecasting/bob-skills/planning-analytics-skill.zip)

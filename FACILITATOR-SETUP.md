@@ -27,6 +27,14 @@ http://<TECHZONE_HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp
 
 ---
 
+### Skill download for Lab 0
+
+Participants download the Bob skill from [`lab-00-setup/planning-analytics-skill.zip`](lab-00-setup/planning-analytics-skill.zip). If you change anything in `planning-analytics-skill/`, rebuild the zip from the repo root so the two stay in sync:
+
+```bash
+rm -f lab-00-setup/planning-analytics-skill.zip && zip -rX lab-00-setup/planning-analytics-skill.zip planning-analytics-skill
+```
+
 ### Practice server for Lab 1 Exercise 5
 
 Exercise 5 has every participant build a cube, 6 dimensions and several TI processes. To keep `smartco` clean for Lab 2 and Lab 3, participants build on a separate TM1 server on the same PA instance: **`DemoGuide`** on the TechZone image (one near-empty cube, no rules, no system processes). If you use a different server, update the server name in the Exercise 5 prompts.
