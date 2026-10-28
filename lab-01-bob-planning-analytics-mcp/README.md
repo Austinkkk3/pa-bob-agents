@@ -38,16 +38,20 @@ This only needs to be done **once per session**.
 ```
 List all available TM1 servers
 ```
-Note the server name returned — you'll use it throughout this lab.
+Expected: 14 servers, including `smartco` — the server used throughout this lab. If `smartco` is not in the list at all, Bob is connected to a different Planning Analytics instance: check the host, port and tenant ID in your `mcp.json` with your facilitator.
 
 ![Bob lists the 14 TM1 servers via the PA MCP tool](assets/screenshots/lab1-ex1-01-list-servers.jpg)
 
 ```
-Show me all cubes available on the server, including which ones are pre-analyzed
+Show me all cubes available on the smartco server, including which ones are pre-analyzed
 ```
-Note which cubes show `is_analyzed: true` — these support natural language queries in Exercise 2. Bob asks which server to use — pick `smartco`.
+Note which cubes show `is_analyzed: true` — these support natural language queries in Exercise 2.
+
+> If you leave out the server name, Bob asks which server to use and offers only a few servers as clickable suggestions. If `smartco` is not one of them, type `smartco` in the reply box.
 
 ![Cubes on smartco — none are pre-analyzed yet](assets/screenshots/lab1-ex1-02-cubes-not-analyzed.jpg)
+
+> ℹ️ **Why is nothing pre-analyzed?** A cube is pre-analyzed only after a Planning Analytics administrator has prepared it for natural-language queries. That set-up step has not been run on the workshop instance, so every cube on `smartco`, including `FPA_Variance`, shows `is_analyzed: false`. This is expected and nothing is broken: Bob cannot use the natural-language Data Explorer tool on these cubes, so it writes MDX instead, which works on any cube. All prompts in this lab are written for that case.
 
 ```
 Show me the dimensions and sample members for the [cube name] cube
@@ -199,7 +203,10 @@ from the MY_INITIALS_FPA_Variance cube on DemoGuide
 
 | Symptom | Fix |
 |---------|-----|
-| "Cube not pre-analyzed" | Expected — Bob switches to MDX automatically |
+| All cubes show `is_analyzed: false`, or "Cube not pre-analyzed" | Expected — pre-analysis is an administrator set-up step that hasn't been run on the workshop instance. Bob switches to MDX automatically |
+| `smartco` is not offered when Bob asks which server to use | Bob only suggests a few servers. Type `smartco` in the reply box, or name the server in the prompt |
+| `smartco` is missing from `List all available TM1 servers` | Bob is connected to a different PA instance. Check the host, port and tenant ID in `mcp.json` |
+| `409` error on MDX queries | The PA query engine isn't running yet. Do the Step 0 warm-up in PAW, then retry |
 | "Member not found" | Bob calls `lookup_potential_members` and presents options |
 | TI process fails | Ask: `Show me the error logs for the last TI process` — Bob explains and fixes |
 | Some numbers in Bob's prose appear in italics and run together | Bob renders text between two `$` signs as a math formula. The numbers in the tables are correct |
