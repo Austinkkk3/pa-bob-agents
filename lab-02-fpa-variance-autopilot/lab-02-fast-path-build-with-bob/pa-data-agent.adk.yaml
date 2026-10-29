@@ -1,4 +1,4 @@
-# Lab 2.9 (Build with Bob) - PA Data Agent for the watsonx Orchestrate ADK.
+# Lab 2 Fast Path (build with Bob) - PA Data Agent for the watsonx Orchestrate ADK.
 # Same instructions as lab-02-2-pa-agent/pa-data-agent.yaml, plus the 6 read-only
 # PA tools from the 'planning-analytics-cube-mcp' MCP toolkit and the ReAct Core style.
 spec_version: v1

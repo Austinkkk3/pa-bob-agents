@@ -48,4 +48,7 @@ Bob also lists roll-up rows that cross the threshold (TOTAL-COMPANY, BU-PROD and
 
 ---
 
-**→ [Lab 2.1 — Configure the PA MCP Connection](../lab-02-1-pa-mcp-connection/README.md)**
+**Next, pick your path ([which one?](../README.md#choose-your-path)):**
+
+- ⚡ **[Lab 2 Fast Path — Let Bob Build the Agents](../lab-02-fast-path-build-with-bob/README.md)**
+- 🧭 **[Lab 2.1 — Configure the PA MCP Connection](../lab-02-1-pa-mcp-connection/README.md)** (step by step)

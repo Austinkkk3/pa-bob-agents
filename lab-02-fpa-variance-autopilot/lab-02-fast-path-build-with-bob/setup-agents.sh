@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Lab 2.9 (Build with Bob): create the Lab 2 agents in one watsonx Orchestrate
+# Lab 2 Fast Path (build with Bob): create the Lab 2 agents in one watsonx Orchestrate
 # environment with the Orchestrate ADK.
 #
 # Creates, in order:
@@ -11,13 +11,14 @@
 # Usage (from this folder, with the ADK installed in an active virtual environment):
 #   export WXO_URL="https://api.<region>.watson-orchestrate.cloud.ibm.com/instances/<id>"
 #   export PA_MCP_URL="http://<HOST>:<PORT>/api/<TENANT_ID>/v0/agentic-ai/cube/mcp"
-#   ./setup-agents.sh
+#   VARIANT=AZ ./setup-agents.sh
 #
-# Optional: VARIANT=Bob ./setup-agents.sh builds a separate copy next to existing agents:
-#   "PA Data Agent (Bob)" / pa_data_agent_bob, "FP&A Variance Autopilot (Bob)" /
-#   fpa_variance_autopilot_bob, with its own connection and toolkit (names ending in -bob).
-#   Agents, connection and toolkit without the suffix are not touched.
+# VARIANT (participants: your initials) adds a suffix to every name, so several people can
+# build in the same Orchestrate environment: "PA Data Agent (AZ)" / pa_data_agent_az,
+# "FP&A Variance Autopilot (AZ)" / fpa_variance_autopilot_az, connection and toolkit ending
+# in -az. Without VARIANT (facilitator pre-build) the plain names are used.
 #
+# Run it in a real terminal (the VS Code terminal), not through Bob's command runner.
 # The script asks for the Orchestrate API key and the PA password and never prints them.
 # Safe to re-run: existing connection and toolkit are reused, agents are updated.
 
@@ -30,7 +31,7 @@ ENV_NAME="${ENV_NAME:-workshop}"
 VARIANT="${VARIANT:-}"
 case "$VARIANT" in
   "") SUFFIX="" ;;
-  *[!A-Za-z0-9]*) echo "VARIANT may contain only letters and digits, for example VARIANT=Bob"; exit 1 ;;
+  *[!A-Za-z0-9]*) echo "VARIANT must be your initials, letters and digits only, for example VARIANT=AZ"; exit 1 ;;
   *) SUFFIX="$(printf '%s' "$VARIANT" | tr '[:upper:]' '[:lower:]')" ;;
 esac
 APP_ID="planning-analytics-basic${SUFFIX:+-$SUFFIX}"

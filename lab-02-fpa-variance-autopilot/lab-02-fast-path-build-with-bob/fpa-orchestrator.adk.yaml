@@ -1,4 +1,4 @@
-# Lab 2.9 (Build with Bob) - FP&A Variance Autopilot for the watsonx Orchestrate ADK.
+# Lab 2 Fast Path (build with Bob) - FP&A Variance Autopilot for the watsonx Orchestrate ADK.
 # Same instructions as lab-02-5-orchestrator/fpa-orchestrator-agent.yaml; delegates to pa_data_agent.
 spec_version: v1
 kind: native

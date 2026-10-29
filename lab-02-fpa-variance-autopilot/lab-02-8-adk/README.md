@@ -7,6 +7,8 @@
 **Prerequisite:** [Lab 2.5](../lab-02-5-orchestrator/README.md) ✅ (or completed core labs)  
 **Reference:** [Get started with watsonx Orchestrate ADK — IBM Developer](https://developer.ibm.com/learningpaths/get-started-watsonx-orchestrate/develop-agents-adk/)
 
+> Want Bob to set up the ADK and build the two Lab 2 agents for you? See the [Lab 2 Fast Path](../lab-02-fast-path-build-with-bob/README.md). This lab walks through the ADK by hand.
+
 ---
 
 ## Goal

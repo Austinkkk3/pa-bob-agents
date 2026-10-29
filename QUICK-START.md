@@ -48,7 +48,7 @@ Expected: 6 dimensions — FPA_Account, FPA_Department, FPA_Scenario, FPA_Time, 
 |-----|----------------|----------|
 | [Lab 0](lab-00-setup/README.md) | MCP config, skill, mode | Bob settings |
 | [Lab 1](lab-01-bob-planning-analytics-mcp/README.md) | Query, analyse, build TM1 model | Bob + PA MCP |
-| [Lab 2](lab-02-fpa-variance-autopilot/README.md) | Multi-agent variance autopilot | watsonx Orchestrate |
+| [Lab 2](lab-02-fpa-variance-autopilot/README.md) | Multi-agent variance autopilot ([⚡ fast path](lab-02-fpa-variance-autopilot/lab-02-fast-path-build-with-bob/README.md): Bob builds it) | watsonx Orchestrate |
 | [Lab 3](lab-03-forecast-replan-autopilot/README.md) | Forecast write-back to PA | Bob |
 
 ---
@@ -56,7 +56,7 @@ Expected: 6 dimensions — FPA_Account, FPA_Department, FPA_Scenario, FPA_Time, 
 ## Key Things to Know
 
 **Shared Orchestrate tenant?**  
-Prefix all your agent names with your initials — `JD_pa_data_agent` not `pa_data_agent`. Change the `name:` field in the YAML too before importing.
+Prefix all your agent names with your initials — `JD_pa_data_agent` not `pa_data_agent`. Change the `name:` field in the YAML too before importing. On the Lab 2 fast path, putting your initials in `VARIANT` does this for you.
 
 **FPA_Variance data layout:**  
 `V1` = Actual · `V2` = Budget · `V3` = Reforecast  
@@ -64,7 +64,7 @@ Prefix all your agent names with your initials — `JD_pa_data_agent` not `pa_da
 `Scenario "Budget"` + `Version V2` = budget values
 
 **Imported agents have no tools yet:**  
-ADK `agents import` creates the agent shell only. Add MCP tools in the agent's **Tools** tab → **Add tool → MCP server** in the Orchestrate UI.
+ADK `agents import` creates the agent shell only. Add MCP tools in the agent's **Tools** tab → **Add tool → MCP server** in the Orchestrate UI. (The Lab 2 fast path script creates the toolkit first, so its agents come with their tools.)
 
 **Testing agents:**  
 Use **Active inventory → Agents → (your agent) → Preview panel** — not the Chat page. Chat only shows published (Live) agents.

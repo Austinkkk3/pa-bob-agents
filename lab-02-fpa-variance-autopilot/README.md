@@ -1,7 +1,7 @@
 # Lab 2 — FP&A Variance Autopilot
 
-**Duration:** 50 minutes (core path: Labs 2.0–2.2, 2.5)
-**Tools:** watsonx Orchestrate · IBM Planning Analytics
+**Duration:** ~20 minutes (fast path) or ~60 minutes (step-by-step path)
+**Tools:** watsonx Orchestrate · IBM Planning Analytics · IBM Bob (fast path)
 **Prerequisite:** [Lab 0](../lab-00-setup/README.md) ✅ · [Lab 1](../lab-01-bob-planning-analytics-mcp/README.md) ✅
 
 ---
@@ -30,7 +30,24 @@ FP&A Variance Autopilot (Orchestrator)
 
 ---
 
-## Sub-Labs (complete in order)
+## Choose Your Path
+
+Both paths build the same two agents and end with the same variance report. Everyone starts with [Lab 2.0](lab-02-0-fpa-dataset-catchup/README.md) (5 min) to confirm the `FPA_Variance` cube.
+
+| | ⚡ Fast path | 🧭 Step-by-step path |
+|-|-------------|---------------------|
+| **Who** | Technical participants comfortable pasting a command into a terminal | Everyone who wants to see each piece in the Orchestrate UI |
+| **How** | You send Bob one prompt; Bob sets up the Orchestrate ADK and builds both agents with you | You create the connection, the agents and their tools by hand in the Orchestrate UI |
+| **Labs** | 2.0 → [Fast Path](lab-02-fast-path-build-with-bob/README.md) | 2.0 → 2.1 → 2.2 → 2.5 |
+| **Time** | ~20 min | ~60 min |
+
+### Fast path
+
+**→ [Lab 2 Fast Path — Let Bob Build the Agents](lab-02-fast-path-build-with-bob/README.md)**
+
+You need Python 3.11–3.13, git, and an Orchestrate API key on top of the Lab 0 setup. The fast path lists everything to prepare.
+
+### Step-by-step path
 
 | Sub-Lab | Deliverable | Time |
 |---------|-------------|------|
@@ -38,12 +55,17 @@ FP&A Variance Autopilot (Orchestrator)
 | [2.1](lab-02-1-pa-mcp-connection/README.md) | PA MCP connection in Orchestrate | 10 min |
 | [2.2](lab-02-2-pa-agent/README.md) | PA Data Agent live, then changed with Bob | 25 min |
 | [2.5](lab-02-5-orchestrator/README.md) | Full Autopilot running end-to-end | 20 min |
-| [2.7](lab-02-7-chat-embed/README.md) *(optional)* | Embedded chat page | 10 min |
-| [2.8](lab-02-8-adk/README.md) *(bonus)* | Orchestrate ADK CLI | 30 min |
-
-> **Note:** Root causes are read directly from the `FPA_Variance` cube — no CRM or ERP system is needed. The earlier CRM/ERP extension (Labs 2.3, 2.4, 2.6) is kept in [`archive/crm-erp-extension`](../archive/crm-erp-extension/README.md) for reference.
 
 **→ [Start with Lab 2.0](lab-02-0-fpa-dataset-catchup/README.md)**
+
+### Optional, for either path
+
+| Sub-Lab | Deliverable | Time |
+|---------|-------------|------|
+| [2.7](lab-02-7-chat-embed/README.md) *(optional)* | Embedded chat page | 10 min |
+| [2.8](lab-02-8-adk/README.md) *(bonus)* | Orchestrate ADK CLI, step by step | 30 min |
+
+> **Note:** Root causes are read directly from the `FPA_Variance` cube — no CRM or ERP system is needed. The earlier CRM/ERP extension (Labs 2.3, 2.4, 2.6) is kept in [`archive/crm-erp-extension`](../archive/crm-erp-extension/README.md) for reference.
 
 ---
 
@@ -52,6 +74,8 @@ FP&A Variance Autopilot (Orchestrator)
 Your facilitator will provide:
 - **PA:** `TECHZONE_HOST`, `PORT`, `TENANT_ID`, `USERNAME`, `PASSWORD`
 - **Orchestrate:** Tenant URL
+
+For the fast path, you also generate an **Orchestrate API key** yourself (Profile icon → **Settings** → **API details**).
 
 ---
 
