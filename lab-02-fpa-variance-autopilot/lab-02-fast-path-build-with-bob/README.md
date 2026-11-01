@@ -52,7 +52,11 @@ Your initials are added to every name, so your agents never overwrite someone el
 
 ## Step 1 — Edit the prompt and send it to Bob
 
-1. In Bob, open a new task (**+**) and switch the mode to **Agent**. Planning Analytics mode cannot run terminal commands, so Bob would only hand you commands to copy.
+1. In Bob, open a new task (**+**) and switch the mode to **🤖 Agent**: click the mode selector at the bottom left of the chat box, or press **⌘ + .** (Ctrl + . on Windows) until it shows Agent.
+
+> **Why Agent mode?** This is the only part of the workshop that runs commands on your laptop (git, Python, the ADK installer). Everything else, including Lab 1, Lab 2.0 and Lab 3, uses **📊 Planning Analytics** mode, which carries the PA rules the expected results were tested with.
+>
+> Bob can change modes by itself in some cases (for example from Plan to Agent), but in our tests it did not leave Planning Analytics mode on its own. It handed over the commands to copy instead of running them. So switch to Agent mode yourself before you send the prompt, and switch back to Planning Analytics mode when you are done.
 2. Copy the prompt below and replace the three values in step 3 of the prompt:
 
 | In the prompt | Replace with |
@@ -173,6 +177,7 @@ Company totals: revenue -$147,000 (-7.44%). Expect 1–2 minutes for the answer.
 
 ## Next
 
+- Switch Bob back to **📊 Planning Analytics** mode for the rest of the workshop.
 - Try the prompts in [Lab 2.5 — More Prompts to Try](../lab-02-5-orchestrator/README.md#more-prompts-to-try) with your agent.
 - Change the agent's materiality rule with Bob in [Lab 2.2 Step 6](../lab-02-2-pa-agent/README.md#step-6--change-the-agent-with-bob-5-minutes). Open **PA Data Agent (AZ)** where that step says "your PA Data Agent".
 - **→ [Continue to Session 3](../../session-03-your-scenario/README.md)**
@@ -197,7 +202,7 @@ Without `VARIANT`, the script builds the agents under their plain names (`pa_dat
 
 | Symptom | Fix |
 |---------|-----|
-| Bob gives you commands to copy instead of running them | Switch Bob to **Agent** mode and ask it to run the steps itself |
+| Bob gives you commands to copy instead of running them | Bob is still in Planning Analytics mode. Switch to **Agent** mode (mode selector or ⌘ + .) and ask it to run the steps itself |
 | `Run this script yourself in the VS Code terminal` | Bob tried to run `setup-agents.sh` itself. Paste the command into the VS Code terminal and run it there |
 | `VARIANT may contain only letters and digits` | `<INITIALS>` was not replaced, or contains a space or symbol. Use only letters and digits, for example `AZ` |
 | `orchestrate: command not found` | The virtual environment is not active. Use the full command from Bob, which starts with `cd` and `source .../.venv-adk/bin/activate` |

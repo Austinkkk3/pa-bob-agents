@@ -55,6 +55,15 @@ Expected: 6 dimensions — FPA_Account, FPA_Department, FPA_Scenario, FPA_Time, 
 
 ## Key Things to Know
 
+**Which Bob mode?**
+
+| Work | Mode |
+|------|------|
+| Anything with Planning Analytics data: Lab 1, Lab 2.0, Lab 2.2 Step 6, Lab 3 | 📊 Planning Analytics |
+| [Lab 2 Fast Path](lab-02-fpa-variance-autopilot/lab-02-fast-path-build-with-bob/README.md): Bob installs the Orchestrate ADK and runs commands on your laptop | 🤖 Agent |
+
+Switch with the mode selector at the bottom left of the Bob chat, or press **⌘ + .** (Ctrl + . on Windows) to move to the next mode. Bob does not reliably switch out of Planning Analytics mode by itself: if it gives you commands to copy instead of running them, switch to Agent mode yourself. Switch back to Planning Analytics mode afterwards; the expected results in the labs were tested in that mode.
+
 **Shared Orchestrate tenant?**  
 Prefix all your agent names with your initials — `JD_pa_data_agent` not `pa_data_agent`. Change the `name:` field in the YAML too before importing. On the Lab 2 fast path, putting your initials in `VARIANT` does this for you.
 

@@ -45,7 +45,7 @@ Both paths build the same two agents and end with the same variance report. Ever
 
 **→ [Lab 2 Fast Path — Let Bob Build the Agents](lab-02-fast-path-build-with-bob/README.md)**
 
-You need Python 3.11–3.13, git, and an Orchestrate API key on top of the Lab 0 setup. The fast path lists everything to prepare.
+You need Python 3.11–3.13, git, and an Orchestrate API key on top of the Lab 0 setup. The fast path lists everything to prepare. It is the only part of the workshop that uses Bob's **🤖 Agent** mode, because Bob runs commands on your laptop; everything else uses **📊 Planning Analytics** mode.
 
 ### Step-by-step path
 
